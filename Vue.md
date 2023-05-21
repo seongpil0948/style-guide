@@ -11,8 +11,6 @@ Typescript를 사용 하십시오.
 새로운 혹은 업데이트가 필요한 패턴이 있다면 이슈를 열어주세요.
 
 ## TODO
-
-- [ ] https://vuejs.org/guide/essentials/lifecycle.html
 - [ ] 대용량 데이터 처리 따로 테스트 했던 example 업로드
 - [X] v-deep 추가
 - [X] https://vue-dev-guide.netlify.app/guide/interface 반영
@@ -74,10 +72,11 @@ Typescript를 사용 하십시오.
   - [4.6 Pinia(Store)](#46-piniastore)
       - [4.6.1 BAD](#461-bad)
       - [4.6.2 GOOD](#462-good)
-  - [INWORK 4.7 composition-api 와 setup](#inwork-47-composition-api-와-setup)
+  - [INWORK 4.7 Composition API와 함께하는 Script Setup 사용](#inwork-47-composition-api와-함께하는-script-setup-사용)
   - [INWORK 4.8 반응형(Reactivity)](#inwork-48-반응형reactivity)
-    - [4.8.1 ref](#481-ref)
-    - [4.8.2 reactive](#482-reactive)
+    - [4.8.1 reactive](#481-reactive)
+      - [limitation](#limitation)
+    - [4.8.2 ref](#482-ref)
     - [4.8.3 typing](#483-typing)
 - [5. UI framework](#5-ui-framework)
     - [5.1  `element plus` 사용하기](#51--element-plus-사용하기)
@@ -123,6 +122,14 @@ $ git clone https://github.com/socketbear/vue-dev-guide.git
    **[⬆ back to top](#table-of-contents)**
 3. 알맞은 폴더를 선정하여 파일을 생성하고 [vue example file](./example/vue.vue) 을 참고하여
    코드를 작성 하십시오.
+4. 아래와 같이 포맷터가 설정 되었는지 확인 하십시오.
+   1. cmd/ctr + shift + p
+   2. open settings(JSON)
+   ```json
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar"
+  },
+   ```
 
 # 3. 파일/폴더 구성 방법
 
@@ -615,26 +622,100 @@ export const useCounterStore = defineStore('counter', () => {
 })
 ```
 
-## INWORK 4.7 composition-api 와 setup
+## INWORK 4.7 Composition API와 함께하는 Script Setup 사용
+Vue2에서도 지원되는 Composition API 사용 시, setup() 함수에서 기존 기능과 혼용해서 사용 했었습니다. 이때 가장 귀찮은 것 중 하나가 DOM에서 사용하기 위해서 return을 통해 대상 오브젝트들을 밖으로 사용할 수 있게 선언했다면, 이제는 그렇지 않아도 됩니다. const 등 상수든 변수든 선언되면 return 과 상관없이 바로 사용할 수 있습니다.
+``` typescript
+<script setup>
+// 상수를 선언하고,
+const msg = 'Hello!'
 
-지금까지 글을 모두 보았고
+// 함수를 선언하고,
+function log() {
+  console.log(msg)
+}
+</script>
+
+<template>
+  <!-- 그대로 사용 -->
+  <button @click="log">
+    {{ msg }}
+  </button>
+</template>
+```
+하지만, props와 emit은 사용하기 위해서 정의를 먼저 해야 합니다. 나머지는 Vue2의 Composition API와 같습니다.
+``` typescript
+// props를 정의하는 방법
+const { title, typeList, financialId } = defineProps<IFinancialStatementProps>()
+```
+- props 정의는 defineProps를 사용합니다.
+- Typescript에서 지원하는 Interface를 통해 해당 Component에서 사용하는 props를 타입 정의합니다.
+- 독립된 컴포넌트는 자신이 받을 props의 타입 정의 해야 완전한 독립성을 유지할 수 있습니다. (코딩의 실수가 줄어듭니다!)
+- 타입을 정의하고 사용하는 건 [Interface](https://vue-dev-guide.netlify.app/guide/interface) 문서를 확인하십시오.
+- 참고: defineProps에서 바로 타입을 정의할 수 없지만, vite-plugin-vue-type-imports 플러그인을 통해 가능하게 되었습니다.
+- emit 정의는 defineEmits를 사용합니다. 이후, 기존 사용하는 방식 그대로 활용하십시오
+``` typescript
+const emit = defineEmits(['change', 'delete'])
+// ...
+const updateData = () => {
+  emit('change', financial)
+}
+```
 
 ## INWORK 4.8 반응형(Reactivity)
+우리는 웹앱을 운영하고 있고, `C` 라는 변수는 `A` 변수와 `B` 변수의 합으로 
+특정 인터랙션을 통해 A 와 B의 값이 변경 되었을때 `C`변수를 갱신하고 싶습니다.
+그리고, A라는 변수의 영향을 받는 Element만 DOM 내에서 끊임없이 갱신(rerender)하고 싶습니다.
+이때 우리는 vue의 핵심 기능중 하나인, reactivity 기능을 이용 할 수 있습니다.
+- https://vuejs.org/api/reactivity-core.html
+- https://vuejs.org/guide/essentials/reactivity-fundamentals.html
 
-우리는 웹/앱을 운영하고 있고, "A" 라는 변수는 유저의 특정 활동 혹은
-A라는 변수의 영향을 받는 Element만
-DOM 내에서 끊임없이 갱신하고 싶습니다.
-
-https://vuejs.org/api/reactivity-core.html
-
-### 4.8.1 ref
-
-`function ref<T>(value: T): Ref<UnwrapRef<T>>`
-
-### 4.8.2 reactive
-
+### 4.8.1 reactive
 `function reactive<T extends object>(target: T): UnwrapNestedRefs<T>`
+Reactive 오브젝트는 [JavaScript Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) 를 사용하여 객체를 생성합니다.
+#### limitation
+- 오직 다음과 같은 타입에 대해서만 사용 가능합니다. `objects, arrays, and collection types such as Map and Set`
+- destructure, export as module(such as composable) 에 대해서 반응형이 누실됩니다.
+```typescript
+const state = reactive({ count: 0 })
 
+// n is a local variable that is disconnected
+// from state.count.
+let n = state.count
+// does not affect original state
+n++
+
+// count is also disconnected from state.count.
+let { count } = state
+// does not affect original state
+count++
+
+// the function receives a plain number and
+// won't be able to track changes to state.count
+callSomeFunction(state.count)
+```
+### 4.8.2 ref
+`function ref<T>(value: T): Ref<UnwrapRef<T>>`
+위 reactive의 한계를 보완하기 위하여, Vue는 ref 기능을 제공하며 특징은 다음과 같습니다.    
+- `const count = ref(0); console.log(count.value) // 1 `
+- `.value`로 접근 하였을때 reactive 기능을 제공합니다. 
+- 위 reactive의 한계의 상황에서도 반응성을 잃지 않습니다.
+- 이기능은 [composable](https://vuejs.org/guide/reusability/composables.html)에 거의 필수적으로 사용됩니다.
+```typescript 
+const obj = {
+  foo: ref(1),
+  bar: ref(2)
+}
+const obj2 = ref({
+  a: 1, b: 2
+})
+// the function receives a ref
+// it needs to access the value via .value but it
+// will retain the reactivity connection
+callSomeFunction(obj.foo)
+
+// still reactive
+const { foo, bar } = obj
+```
 ### 4.8.3 typing
 
 에러와 추가 핸들링 작업을 줄이기 위하여, string 혹은 primitive  `ref<string | undefined>(undefined)` 보다
@@ -770,3 +851,4 @@ composition api를 사용하는 경우에는 `<b>`setup hook에서 beforeCreate,
 
 - https://vuejs.org/style-guide/
 - https://vue-dev-guide.netlify.app/guide
+- https://vuejs.org/guide/extras/reactivity-in-depth.html

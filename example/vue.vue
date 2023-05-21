@@ -64,6 +64,7 @@
 // }
 
 // 10. Lifecycle Events (in the order they are called)
+// refer https://vuejs.org/guide/essentials/lifecycle.html
 // onServerPrefetch
 // onBeforeMount(() => {
 //   if (!isAuthenticated.value) {
@@ -72,15 +73,9 @@
 // });
 // onMounted
 // onBeforeUpdate
-// onUpdated 
+// onUpdated
 // onBeforeUnmount
-// onUnmounted 
-
-
-
-
-
-
+// onUnmounted
 </script>
 
 <template>
@@ -88,11 +83,13 @@
 </template>
 
 <style scoped lang="scss">
-$primary-color:white;
+$primary-color: white;
+
 .parent {
-    background-color: $primary-color;
-    #child-one[role='white-text'] {
-       color: $primary-color;
-    }
+  background-color: $primary-color;
+
+  #child-one[role="white-text"] {
+    color: $primary-color;
+  }
 }
 </style>
