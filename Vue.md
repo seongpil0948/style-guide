@@ -11,14 +11,13 @@ Typescript를 사용 하십시오.
 새로운 혹은 업데이트가 필요한 패턴이 있다면 이슈를 열어주세요.
 
 ## TODO
-- [ ] 대용량 데이터 처리 따로 테스트 했던 example 업로드
+- [X] 대용량 데이터 처리 따로 테스트 했던 example 업로드
 - [X] v-deep 추가
 - [X] https://vue-dev-guide.netlify.app/guide/interface 반영
 - [ ] https://insight.infograb.net/blog/2023/04/21/
 - [ ] https://gist.github.com/plinionaves/
 - [X] https://nuxt.com/docs/guide/directory-structure/
 - [ ] https://pinia.vuejs.org/introduction.htmls
-- [ ] Inwork 태그 작업
 - [ ] fetch & mockup -> axios 로 변경
   - [ ] https://github.com/socketbear/vue-dev-guide
     - plugins 폴더와 기본 Axios 세팅이 된 PR 머지 이후 진행
@@ -72,8 +71,8 @@ Typescript를 사용 하십시오.
   - [4.6 Pinia(Store)](#46-piniastore)
       - [4.6.1 BAD](#461-bad)
       - [4.6.2 GOOD](#462-good)
-  - [INWORK 4.7 Composition API와 함께하는 Script Setup 사용](#inwork-47-composition-api와-함께하는-script-setup-사용)
-  - [INWORK 4.8 반응형(Reactivity)](#inwork-48-반응형reactivity)
+  - [4.7 Composition API와 함께하는 Script Setup 사용](#47-composition-api와-함께하는-script-setup-사용)
+  - [4.8 반응형(Reactivity)](#48-반응형reactivity)
     - [4.8.1 reactive](#481-reactive)
       - [limitation](#limitation)
     - [4.8.2 ref](#482-ref)
@@ -91,8 +90,8 @@ Typescript를 사용 하십시오.
 - [`Uno CSS`와 shortcuts 구성하기](#uno-css와-shortcuts-구성하기)
   - [`shortcuts` 기능 사용하기](#shortcuts-기능-사용하기)
 - [상황별 가이드](#상황별-가이드)
-    - [INWORK 대용량 데이터 처리](#inwork-대용량-데이터-처리)
-    - [INWORK 컴포넌트 내에서 최초 한 번 실행되어야 할 함수](#inwork-컴포넌트-내에서-최초-한-번-실행되어야-할-함수)
+    - [대용량 데이터 처리](#대용량-데이터-처리)
+    - [컴포넌트 내에서 최초 한 번 실행되어야 할 함수](#컴포넌트-내에서-최초-한-번-실행되어야-할-함수)
   - [Reference](#reference)
 
 ---
@@ -653,7 +652,7 @@ export const useCounterStore = defineStore('counter', () => {
 })
 ```
 
-## INWORK 4.7 Composition API와 함께하는 Script Setup 사용
+## 4.7 Composition API와 함께하는 Script Setup 사용
 Vue2에서도 지원되는 Composition API 사용 시, setup() 함수에서 기존 기능과 혼용해서 사용 했었습니다. 이때 가장 귀찮은 것 중 하나가 DOM에서 사용하기 위해서 return을 통해 대상 오브젝트들을 밖으로 사용할 수 있게 선언했다면, 이제는 그렇지 않아도 됩니다. const 등 상수든 변수든 선언되면 return 과 상관없이 바로 사용할 수 있습니다.
 ``` typescript
 <script setup>
@@ -692,7 +691,7 @@ const updateData = () => {
 }
 ```
 
-## INWORK 4.8 반응형(Reactivity)
+## 4.8 반응형(Reactivity)
 우리는 웹앱을 운영하고 있고, `C` 라는 변수는 `A` 변수와 `B` 변수의 합으로 
 특정 인터랙션을 통해 A 와 B의 값이 변경 되었을때 `C`변수를 갱신하고 싶습니다.
 그리고, A라는 변수의 영향을 받는 Element만 DOM 내에서 끊임없이 갱신(rerender)하고 싶습니다.
@@ -728,7 +727,7 @@ callSomeFunction(state.count)
 `function ref<T>(value: T): Ref<UnwrapRef<T>>`
 위 reactive의 한계를 보완하기 위하여, Vue는 ref 기능을 제공하며 특징은 다음과 같습니다.    
 - `const count = ref(0); console.log(count.value) // 1 `
-- `.value`로 접근 하였을때 reactive 기능을 제공합니다. 
+- `.value`로 읽기/쓰기 작업에 대한 reactive 기능을 제공합니다. 
 - 위 reactive의 한계의 상황에서도 반응성을 잃지 않습니다.
 - 이기능은 [composable](https://vuejs.org/guide/reusability/composables.html)에 거의 필수적으로 사용됩니다.
 ```typescript 
@@ -864,16 +863,38 @@ export default defineConfig({
 
 # 상황별 가이드
 
-### INWORK 대용량 데이터 처리
+### 대용량 데이터 처리
+Vue 는 상태관리에 대한 직관성을 위해, 반응형 변수에 대해 deep observe 가 default 하도록 되어있습니다.
+또한, 그에대한 event effect를 WeakMap전역변수로 관리하기 때문에, 데이터(This typically becomes noticeable when dealing with large arrays of deeply nested objects) 크기가 커지게 되면 오버헤드로 RAM 2G 사양의 클라이언트 노트북에서 확인이 불가능 할 것이 눈에 선합니다.
+최적화 방법에는 여러가지가 있지만, 이에 vue-api는 [shallow](https://vuejs.org/api/reactivity-advanced.html) 를 제공합니다. 이 기능은 반응형 변수에 대한 root level 에 대해서만 observe 기능을 제공하고 있습니다.
 
-만약 우리가 통계 데이터로부터 차트를 생성하는 기능을 만들어야 하고
-클라이언트는 10만개 이상의 데이터에 대한 통계를 확인 하고 싶을때
-모든 데이터를 reactive, ref 와 같은 반응형 변수에 대해 할당을 하게되면
-Vue는 Array 뿐 아니라 각 요소에도 반응성을 주입합니다.
-이는 엄청난 오버헤드로 RAM 2G 사양의 클라이언트 노트북에서 확인이 불가능 할 것이 눈에 선합니다.
-최적화 방법에는 여러가지가 있지만, vue-api 관점에서 데이터를 [shallow](https://vuejs.org/api/reactivity-advanced.html) 변수에 담는 것이 첫번째 입니다.
+```typescript
+const shallowArray = shallowRef([...Array(100000).keys()].map(num => ({ num })))
 
-### INWORK 컴포넌트 내에서 최초 한 번 실행되어야 할 함수
+watch(
+  () => shallowArray.value,
+  val => console.log('shallowArray to ', val),
+  { deep: true },
+)
+
+function triggerForce() {
+  const newObject = { num: 5000 }
+  shallowArray.value.push(newObject)
+  triggerRef(shallowArray)
+}
+function triggerSuccess() {
+  const newObject = { num: 5000 }
+  shallowArray.value = [...shallowArray.value, newObject]
+}
+function triggerFail() {
+  const newObject = { num: 5000 }
+  shallowArray.value.push(newObject)
+}
+```
+https://vuejs.org/guide/best-practices/performance.html#reduce-reactivity-overhead-for-large-immutable-structures
+
+
+### 컴포넌트 내에서 최초 한 번 실행되어야 할 함수
 
 composition api를 사용하는 경우에는 `<b>`setup hook에서 beforeCreate, created에 해당하는 과정이 한꺼번에 처리 됩니다.
 최초 데이터를 받아오는 함수는 사이클이 아닌 `setup` 과정에서 받아 올 수 있도록 합니다.

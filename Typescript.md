@@ -15,6 +15,7 @@ Typescript는 **Type**이 추가 되었고, 이로 인해 얻게 되는 이점�
 
 ## TODO
 [ ] https://google.github.io/styleguide/tsguide.html#file-encoding-utf-8
+[ ] https://gist.github.com/anichitiandreea/e1d466022d772ea22db56399a7af576b
 
 ## Table of Contents
 - [Dev Guide for Typescript](#dev-guide-for-typescript)
