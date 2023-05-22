@@ -49,7 +49,6 @@ Typescript를 사용 하십시오.
     - [3.4.4 `/src/layouts`](#344-srclayouts)
     - [3.4.5 `/src/modules`](#345-srcmodules)
     - [3.4.6 `/src/pages`](#346-srcpages)
-    - [3.4.7 `/src/plugins`](#347-srcplugins)
     - [3.4.8 `/src/store`](#348-srcstore)
     - [3.4.9 `/src/styles`](#349-srcstyles)
     - [3.4.10 `/src/types`](#3410-srctypes)
@@ -325,6 +324,36 @@ meta:
 layout을 사용한 페이지는 layout 내 `<RouterView />`에 해당 페이지가 렌더링 됩니다. 다시 정리하자면, 각 **페이지**에서 사용하는 layout을 **선택**하는 구조 입니다.
 
 ### 3.4.5 `/src/modules`
+[Modules](https://github.com/antfu/vitesse/tree/main/src/modules) 위 경로에 저장된 *.ts은 아래와 같은 템플릿을 따르며,
+Vue plugin으로서 자동설치 됩니다. (src/main.ts) 
+```typescript
+// https://github.com/antfu/vite-ssg
+export const createApp = ViteSSG(
+  App,
+  { routes, base: import.meta.env.BASE_URL },
+  (ctx) => {
+    // install all modules under `modules/`
+    Object.values(import.meta.glob<{ install: UserModule }>('./modules/*.ts', { eager: true }))
+      .forEach(i => i.install?.(ctx))
+  },
+)
+```
+[Vue Plugin](https://vuejs.org/guide/reusability/plugins.html#plugins) 플러그인은 APP 수준에서 기능들을 추가/확장 하기 위한 자체 코드입니다.  
+각 파일명은 camelCase를 준수 해야합니다.  
+*각 플러그인은 다음 항목중 하나를 준수 해야합니다.*
+- Vue App에 대하여 Global directive/component 로서 등록 되어야 합니다.
+- [provide/inject](https://vuejs.org/guide/components/provide-inject.html)  방법으로 하위 컴포넌트에서 사용 가능해야합니다.
+- 앱 전역 프로퍼티로서 하위 컴포넌트에서 `app.config.globalProperties` 를 통해 접근 가능해야 합니다.
+- 외부 라이브러리를 확장하여 `app.use(router)` 형태로 사용 가능해야합니다.
+
+```typescript
+const router = VueRouter.createRouter({
+  // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
+  history: VueRouter.createWebHashHistory(),
+  routes, // short for `routes: routes`
+})
+app.use(router)
+```
 
 ### 3.4.6 `/src/pages`
 
@@ -368,25 +397,6 @@ export default {
 - 각 서비스를 나눠진다 해도, `Vite`의 `Pages` 플러그인을 사용할 수 있습니다. 위와 같이 등록하게 되면, **sub-path**로 각 서비스들을 접근하여 사용할 수 있습니다.
 - 각 파일명은 kebab-case를 준수하여 작성하십시오.
 - 각 파일명은 URL 과 1대1 매칭이 되도록하십시오.
-
-
-### 3.4.7 `/src/plugins`
-[Vue Plugin](https://vuejs.org/guide/reusability/plugins.html#plugins) 플러그인은 APP 수준에서 기능들을 추가/확장 하기 위한 자체 코드입니다.  
-각 파일명은 camelCase를 준수 해야합니다.  
-*각 플러그인은 다음 항목중 하나를 준수 해야합니다.*
-- Vue App에 대하여 Global directive/component 로서 등록 되어야 합니다.
-- [provide/inject](https://vuejs.org/guide/components/provide-inject.html)  방법으로 하위 컴포넌트에서 사용 가능해야합니다.
-- 앱 전역 프로퍼티로서 하위 컴포넌트에서 `app.config.globalProperties` 를 통해 접근 가능해야 합니다.
-- 외부 라이브러리를 확장하여 `app.use(router)` 형태로 사용 가능해야합니다.
-
-```typescript
-const router = VueRouter.createRouter({
-  // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
-  history: VueRouter.createWebHashHistory(),
-  routes, // short for `routes: routes`
-})
-app.use(router)
-```
 
 
 
