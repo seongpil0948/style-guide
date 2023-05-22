@@ -49,10 +49,11 @@ Typescript를 사용 하십시오.
     - [3.4.4 `/src/layouts`](#344-srclayouts)
     - [3.4.5 `/src/modules`](#345-srcmodules)
     - [3.4.6 `/src/pages`](#346-srcpages)
-    - [3.4.7 `/src/store`](#347-srcstore)
-    - [3.4.8 `/src/styles`](#348-srcstyles)
-    - [3.4.9 `/src/types`](#349-srctypes)
-    - [3.4.10 `/test/`](#3410-test)
+    - [3.4.7 `/src/plugins`](#347-srcplugins)
+    - [3.4.8 `/src/store`](#348-srcstore)
+    - [3.4.9 `/src/styles`](#349-srcstyles)
+    - [3.4.10 `/src/types`](#3410-srctypes)
+    - [3.4.11 `/test/`](#3411-test)
 - [4. Vue API/Pkg 이용](#4-vue-apipkg-이용)
   - [4.1 약어 사용(Directive shorthands)](#41-약어-사용directive-shorthands)
       - [4.1.1 BAD](#411-bad)
@@ -254,7 +255,6 @@ const { t } = useI18n()
 
 `/public/favicon.ico` will be available at  `http://localhost:3000/favicon.ico`
 
-
 ```html
 <img :style="` width: 150%; height: 150%`" src="/logo.png" />
 ```
@@ -369,22 +369,43 @@ export default {
 - 각 파일명은 kebab-case를 준수하여 작성하십시오.
 - 각 파일명은 URL 과 1대1 매칭이 되도록하십시오.
 
-### 3.4.7 `/src/store`
+
+### 3.4.7 `/src/plugins`
+[Vue Plugin](https://vuejs.org/guide/reusability/plugins.html#plugins) 플러그인은 APP 수준에서 기능들을 추가/확장 하기 위한 자체 코드입니다.  
+각 파일명은 camelCase를 준수 해야합니다.  
+*각 플러그인은 다음 항목중 하나를 준수 해야합니다.*
+- Vue App에 대하여 Global directive/component 로서 등록 되어야 합니다.
+- [provide/inject](https://vuejs.org/guide/components/provide-inject.html)  방법으로 하위 컴포넌트에서 사용 가능해야합니다.
+- 앱 전역 프로퍼티로서 하위 컴포넌트에서 `app.config.globalProperties` 를 통해 접근 가능해야 합니다.
+- 외부 라이브러리를 확장하여 `app.use(router)` 형태로 사용 가능해야합니다.
+
+```typescript
+const router = VueRouter.createRouter({
+  // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
+  history: VueRouter.createWebHashHistory(),
+  routes, // short for `routes: routes`
+})
+app.use(router)
+```
+
+
+
+### 3.4.8 `/src/store`
 
 특정 {service}가 아닌 전역적으로 사용되는 [Pinia](#piniastore)모듈로 구성된 폴더입니다.
 
 - 각 파일명은 camelCase를 준수 하십시오.
 
-### 3.4.8 `/src/styles`
+### 3.4.9 `/src/styles`
 
 css, scss 파일로 구성된 폴더 입니다. `<br>`
 variables 폴더는 scss 전역 변수, 함수등을 적용 하므로 주의하세요.
 
-### 3.4.9 `/src/types`
+### 3.4.10 `/src/types`
 
 - 각 파일명은 PascalCase를 준수 하십시오.
 
-### 3.4.10 `/test/`
+### 3.4.11 `/test/`
 
 **[⬆ back to top](#table-of-contents)**
 
