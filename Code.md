@@ -80,11 +80,11 @@ else if 문을 사용하지 마십시오.
    2. [{issue number}]-[{branch type}]-[{issue name}]
 3. Remote 저장소에 자동 생성된 브랜치의 fetch or pull(origin) 진행한다.
 4. 로컬 저장소에서 코드 수정 및 커밋을 진행한다.
-5. Git squash 로 커밋 메시지 정리한다.
-6. Git rebase 로 로컬 작업 결과를 최신화 한다.
-7. 병합 대상 브랜치로 Merge Request를 생성한다.
-8. maintainer 권한을 가진 인원( 최소 1명 이상)의  리뷰 이후  approve를 진행한다.
-9. 병합을 확인하고 자신의 원격 브랜치가 삭제 되었는지 확인한다.
+5. Git squash 로 커밋 메시지 정리한다. [rebase 를 이용한 squash](https://meetup.nhncloud.com/posts/39)
+7. Git rebase 로 로컬 작업 결과를 최신화 한다.
+8. 병합 대상 브랜치로 Merge Request를 생성한다.
+9. maintainer 권한을 가진 인원( 최소 1명 이상)의  리뷰 이후  approve를 진행한다.
+10. 병합을 확인하고 자신의 원격 브랜치가 삭제 되었는지 확인한다.
 
 ### Commit
 **커밋 메시지 포맷**: `{Commit Type}(Summary): { Detail Content }`  
