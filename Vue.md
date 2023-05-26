@@ -125,11 +125,11 @@ $ git clone https://github.com/socketbear/vue-dev-guide.git
 4. 아래와 같이 포맷터가 설정 되었는지 확인 하십시오.
    1. cmd/ctr + shift + p
    2. open settings(JSON)
-   ```json
+```json
   "[vue]": {
     "editor.defaultFormatter": "Vue.volar"
   },
-   ```
+```
 
 # 3. 파일/폴더 구성 방법
 
