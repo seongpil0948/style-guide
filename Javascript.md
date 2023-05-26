@@ -13,6 +13,7 @@
   - [Strings](#strings)
   - [Functions](#functions)
       - [비동기 작업](#비동기-작업)
+      - [콜백 함수를 받는 함수를 이용할때, 중괄호를 생략하지마세요](#콜백-함수를-받는-함수를-이용할때-중괄호를-생략하지마세요)
   - [Arrow Functions](#arrow-functions)
   - [Classes \& Constructors](#classes--constructors)
   - [Modules](#modules)
@@ -358,9 +359,9 @@
 > [Airbnb](https://github.com/airbnb/javascript/blob/master/README.md#references)와 다르게 별도의 가이드를 제공하지 않습니다.
 
 ## Strings
-> `6.1`,`6.2` 항목을 제외하고는 [Airbnb](https://github.com/airbnb/javascript/blob/master/README.md#strings)와 동일합니다.
 
-  - [6.1](#6.1) <a name='6.1'></a>따옴표는 쌍따옴표를 사용한다. 이스케이프한 경우는 예외로 홑따옴표를 사용할 수 있다. eslint: [`quotes`](http://eslint.org/docs/rules/quotes.html)
+
+  - [6.1](#6.1) <a name='6.1'></a>쌍따옴표는 따옴표를 사용한다. 이스케이프한 경우는 예외로 홑따옴표를 사용할 수 있다. eslint: [`quotes`](http://eslint.org/docs/rules/quotes.html)
 
     ```javascript
     // bad
@@ -692,8 +693,9 @@
     );
     ```    
 #### 비동기 작업
-함수 스코프 내에서 비동기 코드가 실행되지 않을때 `async` 키워드를 붙일 필요가 없습니다.
 [7.1.1](#7.1.1) <a name='7.1.1'></a> then catch 문보다 async await 문을 선호 합니다.
+- 함수 스코프 내에서 비동기 코드가 실행되지 않을때 `async` 키워드를 붙일 필요가 없습니다.
+- Async await 남용 금지, 리턴을 기다릴 Dom 이나 리시버가 없으면 필요없다
 ```javascript
 // bad
 myFirstPromise.then((successMessage) => {
@@ -703,6 +705,16 @@ myFirstPromise.then((successMessage) => {
 async funcName() {...
   const successMessage = await myFirstPromise()
 }
+```
+#### 콜백 함수를 받는 함수를 이용할때, 중괄호를 생략하지마세요
+``` typescript
+// bad
+onMounted(getTodo)
+// good
+onMounted((todo) => {
+  console.info("todo", todo)
+  getTodo(todo)
+})
 ```
   
 **[⬆ back to top](#table-of-contents)**
@@ -1962,6 +1974,14 @@ async funcName() {...
     // good
     const sum = 100 + 200 + 300 + 
          400 + 500 + 600 + 700 + 800;
+    ```
+  - [18.14](#18.14) <a name='18.14'></a>조건식 && 보다 optional chain을 사용한다.(?.) 
+
+    ```javascript
+    // bad
+    if (selected && user && user.name)
+    // good
+    if (selected && user?.name)
     ```
 
 **[⬆ back to top](#table-of-contents)**

@@ -34,6 +34,7 @@ Typescript를 사용 하십시오.
     - [3.1.1 `style tag` 작성법](#311-style-tag-작성법)
       - [3.1.2 deep 사용법](#312-deep-사용법)
   - [3.2 `/locales/`](#32-locales)
+    - [상수는 i18n으로 다국적언어들을 모두 사용 할 수 있게하십시오](#상수는-i18n으로-다국적언어들을-모두-사용-할-수-있게하십시오)
     - [3.2.1 로케일 파일 설정](#321-로케일-파일-설정)
     - [3.2.2  `useI18n()` 에서 `t` 함수를 추출하여, 사용](#322--usei18n-에서-t-함수를-추출하여-사용)
     - [3.2.3 로케일 설정](#323-로케일-설정)
@@ -212,6 +213,13 @@ i18n을 사용하기 위해서는 다음과 같은 작업이 필요합니다.
 1. `/locales` 폴더 내 로케일 파일 설정
 2. `useI18n()` 에서 `t` 함수를 추출하여, 사용
 
+### 상수는 i18n으로 다국적언어들을 모두 사용 할 수 있게하십시오
+```typescript
+// bad
+const title = '에버커스 제목'
+// good
+const title = t('title.abacus')
+```
 ### 3.2.1 로케일 파일 설정
 
 `/locales` 폴더 내에 로케일 파일을 생성합니다. 로케일 파일은 `.yml` 형식으로 작성되며, `key`와 `value`로 구성됩니다. `key`는 `t` 함수의 인자로 사용되며, `value`는 실제로 출력될 문자열입니다. 예를 들어, `ko.yml` 파일을 다음과 같이 작성하면, `t('hello')` 함수를 호출하면 `안녕하세요`가 출력됩니다.
@@ -266,7 +274,7 @@ Component, page의 명칭은 **고유**해야 합니다. 자동으로 `import` �
 ### 3.4.1 `/src/components`
 
 프로젝트 전체 서비스에서 사용되는 최소 단위 컴포넌트를 저장하십시오
-
+좋은 컴포넌트는 재사용성이 높고 타 컴포넌트에 종속되지 않습니다.
 - 각 파일명은 PascalCase를 준수 하십시오.
 - The prefix
   - The를 prefix로 하는 이름을 가진 컴포넌트는 전역적인 최상위 컴포넌트로서
@@ -411,8 +419,8 @@ css, scss 파일로 구성된 폴더 입니다. `<br>`
 variables 폴더는 scss 전역 변수, 함수등을 적용 하므로 주의하세요.
 
 ### 3.4.10 `/src/types`
-
 - 각 파일명은 PascalCase를 준수 하십시오.
+- if.. `a: string | undefined`보다는 `a = computed<string>` 형태로 사용하세요
 
 ### 3.4.11 `/test/`
 
@@ -494,6 +502,7 @@ vue는 템플릿 작성시 디렉티브의 약어 기능을 제공합니다.
 ```javascript
 // This is only OK when prototyping
 const props = defineProps(['status'])
+defineProps<{ title: string | undefined }>()
 ```
 
 #### 4.3.2 GOOD
@@ -521,6 +530,9 @@ const props = defineProps({
     }
   }
 })
+withDefaults(defineProps<{ title: string | undefined }>(), {
+  title: "",
+});
 ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -700,11 +712,13 @@ const updateData = () => {
 ### 4.8.1 reactive
 `function reactive<T extends object>(target: T): UnwrapNestedRefs<T>`
 Reactive 오브젝트는 [JavaScript Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) 를 사용하여 객체를 생성합니다.
+반드시 인터페이스를 사용하십시오.
 #### limitation
 - 오직 다음과 같은 타입에 대해서만 사용 가능합니다. `objects, arrays, and collection types such as Map and Set`
 - destructure, export as module(such as composable) 에 대해서 반응형이 누실됩니다.
 ```typescript
-const state = reactive({ count: 0 })
+interface UserCounter { count: number }
+const state = reactive<UserCounter>({ count: 0 })
 
 // n is a local variable that is disconnected
 // from state.count.

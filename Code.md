@@ -1,16 +1,77 @@
-# TODO
-[ ] Signal - > flag
-[ ] https://insight.infograb.net/blog/2023/04/21/why-commit-convention-is-important/
-[ ] Validations 함수 true false를 반환하는 순수 함수로 변환해야하며
-[ ] 순수 함수들을 실행하는 워크플로우를 실행하는함수로 분리가 되어야 한다.
+# 1. Coding Guide
+
+* 순수 함수를 사용할 경우, `parameter`와 `return` 되는 값은 **Type** 정의 하십시오. 일반적인 함수도 `parameter`가 있는 경우 필수로 **Type**을 정의해야합니다.
+* `import`를 할 때, `.js`, `.ts`, `.vue` 등 확장자를 입력하지 않아도 Framework에서는 접근하여 사용 가능합니다. 
+* 확장자를 입력하지 않으면 좋은 한가지 점은, 내부적으로 분리가 필요할 경우 디렉토리로 파일명과 동일하게 디렉토리 명을 작성하여 대치하는데, 그 안에 `index`파일을 만들어 놓으면, `import` 수정 없이 바로 접근이 가능합니다.
+* 싱글톤 패턴으로 구성된 요소들을 만들 경우 네이밍은 대게 `use`를 앞에 붙여 함수형의 리턴 형으로 오브젝트를 가져와 사용할 수 있게 합니다. 대표적으로 `useRouter`, `useStore` 등이 있습니다.
+* 웹앱 URL/URI 는 `https://axios-http.com/kr/docs/handling_errors` 와 같이 상위경로와 관계를 잘 표현 할 수 있도록 하십시오.
+* 가장 이상적인 개발 방법은 if 가 적은 코드를 작성하는 것입니다. (API를 사용)
+  * if 가 선언된 순간 그 코드는 분기점이 생기며, 복잡도가 올라갑니다.
 
 
-# Coding Guide
 
-* 순수 함수를 사용할 경우, `parameter`와 `return` 되는 값은 **Type** 정의 하십시오. 일반적인 함수도 `parameter`가 있는 경우 필수로 **Type** 정의해야합니다.
+## 2. Naming
+- 애버커스에서 고민한 네이밍 목록으로 모든프로젝트에서 일관된 네이밍을 위해 제작 중입니다.
+  - 반드시 링크를 클릭하여 참여하십시오. [네이밍 History](https://abacus02-my.sharepoint.com/:x:/g/personal/seongpil0948_abacus02_onmicrosoft_com/EXwU2uVs3KxGqedcAflMackBXXZU43JtCS0IpRQduX7PNg?e=8rzSeT)
 
-### 순수함수 refactor
-* 함수에서 함수를 또 그안에서 함수를 호출하는 형식보다 함수 안에서 순서대로 함수들이 실행하게 끔 하십시오. 함수 사용이 tree 구조 처럼 깊어지게 된다면, 찾는 것도 디버깅 하는 것도 어려워 집니다. 또한, **재사용성**이 있는 함수라면 순수함수 형태로 만드는 것이 좋습니다.
+### 2.1 모든 선언 declare identity는 합성어 형태로 선언되어야 합니다. 함수명은 (동사 + 명사)로 구성되며, 일반적으로 능동태를 사용하되 이벤트 등에 반응하는 기능인 경우 수동태를 사용하세요.
+
+### 2.2 모든 선언 declare identity는 합성어 형태로 선언되어야 합니다.단수와 복수를 반드시 구별 하십시오. 
+```typescript 
+workers = new Worker (X)
+worker = new Worker (O)
+```
+### 2.3 팀원들이 서로 어떻게 네이밍 하였는지 관심을 갖고, 피드백을 하십시오.
+### 2.4 코드는 네이밍만으로도 어떤 역할/동작/타입을 추론 할 수 있어야합니다.
+`selectedAuthList -> selectedAuthIds`
+- 프로젝트내에서는 특정단어는 하나의 역할을 의미해야 합니다.
+```typescript
+const auth = new Auth()
+const authList = [new User(), new User()]
+```
+### 2.5 스토리 위주로 살펴보아 네이밍에 있어 흐름이 잘 이어지는지 판단 하십시오.
+### 2.6 모든 선언 declare identity는 합성어 형태로 선언되어야 합니다.
+```typescript
+// bad
+const user = new User()
+const update = () => ...
+// good
+const userMe = new User()
+const updateUser = () => ...
+```
+
+### 2.7 변수, 클래스는 능동적인 기능을 수행하므로, 명사를 사용하십시오.
+```
+// bad
+class: FeatureExtract (X)
+var: work (X)
+
+// good
+class: FeatureExtractor (O)
+var: subWorker (O)
+var: logger (O)
+```
+### 2.8 Data와 같은 범용 변수명을 피하십시오
+```typescript
+// bad
+const userData = new User()
+const userData = [new User(), new User()]
+// good
+const userMe = new User()
+const userOthers = [new User(), new User()]
+```
+
+
+## 3. 순수함수 refactor
+* 함수에서 함수를 또 그안에서 함수를 호출하는 형식보다 함수 안에서 순서대로 함수들이 실행하게 끔 하십시오. 
+* 함수 사용이 tree 구조 처럼 깊어지게 된다면, 찾는 것도 디버깅 하는 것도 어려워 집니다. 또한, **재사용성**이 있는 함수라면 순수함수 형태로 만드는 것이 좋습니다.
+
+* 오직 한개의 동작을 담당하고. 어떤 동작을 하는지 추론이 되거나, "몰라도 쓸만하네^^"등 명확하게 리턴값을 알 수 있습니다.
+* 이벤트에 따라 수행하는 함수를 제외하고, 재사용성 있게 함수를 만들 경우에는 순수 함수 형태로 만드는 것이 좋습니다. 
+* 갑자기, 로직이 변경되어 함수를 수정해야 할 경우, 순수 함수일 때 변경하거나 재 작성하기 편합니다.
+* 이게 가장 중요합니다. 개발을 하다 보면, 설계된 그대로 구현되어 차후 수정이 없다면 문제가 없지만, 수정이 잦아지면 순수 함수로 만들어야 할 이유를 자연스레 후회와 함께 깨닫게 됩니다. 그래서, 순수 함수로 만들어 놓는 것이 좋습니다. 
+* 물론, 순수 함수로 만들 수 없는 경우도 있습니다. 그럴 경우에는 최대한 순수 함수로 만들 수 있도록 노력하십시오.
+
 
 ```js
 // 이렇게 개발하지 마십시오.
@@ -26,17 +87,37 @@ function b() {
 
 // 이런 형식으로 사용할 수 있게 하십시오.
 function a() {
+  // 실행함수
   b()
   c()
   d()
 }
 
-// 순수 함수 형식이라면...
+// 순수 함수 형식이라면 실행함수는 
+// 그저 순수함수들을 실행만 시키면 됩니다.
 function a() {
   bbb.value = b(bb)
   ccc.value = c(cc)
   ddd.value = d(dd)
 }
+```
+```typescript
+// 이것은 순수함수가 아닙니다.
+// 인자가 명확하지않고, 리턴값도 없습니다.
+// 옵션에 종속성이 있어서 외부에서 opt이 바뀔경우 이함수에 영향을 미칩니다.
+// 우리는 이것을 실행함수라고 부르기로 했습니다.
+export const getTodoList1 = async () => {
+  const res = await fetch(`api/v1/todo?page=${opt.page}`);
+  todoList = await res.json();
+};
+
+// 인자와 리턴값이 명확합니다.
+// API 주소가 바뀌었을때, 주소만 바꾸면 당신의 서비스는 문제가 없을 것입니다.
+export const getTodoList2 = async (page: string) => {
+  const res = await fetch(`api/v1/todo?page=${page}`);
+  return await res.json();
+};
+
 ```
 ## 조건문
 ### else if 가 아닌 다중 if를 사용하는 경우
@@ -66,9 +147,6 @@ else if 문을 사용하지 마십시오.
 // 일반적인 주석
 ```
 
-* [ ] 이벤트에 따라 수행하는 함수를 제외하고, 재사용성 있게 함수를 만들 경우에는 순수 함수 형태로 만드는 것이 좋습니다. 갑자기, 로직이 변경되어 함수를 수정해야 할 경우, 순수 함수일 때 변경하거나 재 작성하기 편합니다. 이게 가장 중요합니다. 개발을 하다 보면, 설계된 그대로 구현되어 차후 수정이 없다면 문제가 없지만, 수정이 잦아지면 순수 함수로 만들어야 할 이유를 자연스레 후회와 함께 깨닫게 됩니다. 그래서, 순수 함수로 만들어 놓는 것이 좋습니다. 물론, 순수 함수로 만들 수 없는 경우도 있습니다. 그럴 경우에는 최대한 순수 함수로 만들 수 있도록 노력하십시오.
-* [ ] `import`를 할 때, `.js`, `.ts`, `.vue` 등 확장자를 입력하지 않아도 Framework에서는 접근하여 사용 가능합니다. 확장자를 입력하지 않으면 좋은 또 한가지 점은, 내부적으로 분리가 필요할 경우 디렉토리로 파일명과 동일하게 디렉토리 명을 작성하여 대치하는데, 그 안에 `index`파일을 만들어 놓으면, `import` 수정 없이 바로 접근이 가능합니다.
-* [ ] 싱글톤 패턴으로 구성된 요소들을 만들 경우 네이밍은 대게 `use`를 앞에 붙여 함수형의 리턴 형으로 오브젝트를 가져와 사용할 수 있게 합니다. 대표적으로 `useRouter`, `useStore` 등이 있습니다.
 
 # CI&CD
 ## CI-Git

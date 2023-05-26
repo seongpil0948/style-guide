@@ -1,0 +1,1 @@
+class IdNotError extends Error {}
