@@ -1,0 +1,15 @@
+**/.DS_Store
+**/.vite-ssg-dist
+**/.vite-ssg-temp
+**/*.local
+**/dist
+**/build
+**/dist-ssr
+**/node_modules
+**/.idea/
+**/*.log
+**/.env.*.local
+**/auto-imports.d.ts
+**/components.d.ts
+**/mock/rest/*/*/*/mock/response.txt
+**/mock/rest/.validation.json
