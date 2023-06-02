@@ -1,0 +1,22 @@
+[package]
+name = "sp_grep"
+version = "0.1.0"
+authors = ["seongpil0948 <seongpil0948@gmail.com>"]
+license="MIT OR Apache-2.0"
+edition="2018"
+description = "A short description of my package"
+readme = "README.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+# [dependencies]
+
+# https://doc.rust-lang.org/cargo/
+# cargo build
+# [profile.dev]
+# fast compile, level(0 ~ 3)
+# opt-level = 1
+
+# cargo build --release
+# [profile.release]
+opt-level = 3

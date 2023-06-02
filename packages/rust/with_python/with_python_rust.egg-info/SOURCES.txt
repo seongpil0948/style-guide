@@ -1,0 +1,7 @@
+README.md
+setup.py
+with_python_rust.egg-info/PKG-INFO
+with_python_rust.egg-info/SOURCES.txt
+with_python_rust.egg-info/dependency_links.txt
+with_python_rust.egg-info/not-zip-safe
+with_python_rust.egg-info/top_level.txt

@@ -1,0 +1,60 @@
+<!-- qna 영역 -->
+<div id="prdQnA" class="ec-base-tab gFlex {$qna_display|display}">
+    <div class="board">
+        <h3>Q&amp;A</h3>
+        <p class="button">
+            <span class="gRight">
+                <a href="{$qna_write}">Write</a>
+                <a href="{$qna_list}">All</a>
+            </span>
+        </p>
+
+        <div module="product_qna">
+        <!--@js(/js/module/product/qna.js)-->
+            <a name="use_qna"></a>
+            <p class="noAccess {$deny_display|display}">글읽기 권한이 없습니다.</p>
+            <div class="minor {$adult_display|display}">
+                <p><img src="//img.echosting.cafe24.com/skin/base_ko_KR/product/ico_under19.gif" alt="" /> <strong>"19세 미만의 미성년자"</strong>는 출입을 금합니다!</p>
+                <p class="button"><a href="/intro/board.html{$returnParam}" class="btnEm sizeS">성인인증 하기</a></p>
+            </div>
+
+            <div class="ec-base-table typeList">
+                <table border="1" summary="" class="{$list_display|display}">
+                    <caption>상품 Q&amp;A</caption>
+                    <colgroup>
+                        <col style="width:70px;" />
+                        <col style="width:auto" />
+                        <col style="width:80px;" />
+                        <col style="width:100px;" />
+                    </colgroup>
+                    <tbody class="center">
+                        <tr>
+                            <td>{$no}</td>
+                            <td class="subject left txtBreak">{$icon_re}{$icon_lock} <a href="{$link_board_detail}{$param_read}">{$subject}</a>{$icon_new}{$icon_hit}{$icon_file}<span class="txtWarn">{$comment_count}</span></td>
+                            <td>{$member_icon} {$writer}</td>
+                            <td class="txtInfo txt11">{$write_date}</td>
+                        </tr>
+                        <tr>
+                            <td>{$no}</td>
+                            <td class="subject left txtBreak">{$icon_re}{$icon_lock} <a href="{$link_board_detail}{$param_read}">{$subject}</a>{$icon_new}{$icon_hit}{$icon_file}<span class="txtWarn">{$comment_count}</span></td>
+                            <td>{$member_icon} {$writer}</td>
+                            <td class="txtInfo txt11">{$write_date}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div module="product_qnapaging" class="pagination">
+            <a href="{$param_before}" class="prev">Prev</a>
+            <ol>
+                <li><a href="{$param}" class="{$param_class}">{$no}</a></li>
+                <li><a href="{$param}" class="{$param_class}">{$no}</a></li>
+                <li><a href="{$param}" class="{$param_class}">{$no}</a></li>
+                <li><a href="{$param}" class="{$param_class}">{$no}</a></li>
+                <li><a href="{$param}" class="{$param_class}">{$no}</a></li>
+            </ol>
+            <a href="{$param_next}" class="next">Next</a>
+        </div>
+    </div>
+</div>
+</div>

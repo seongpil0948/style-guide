@@ -1,0 +1,14 @@
+{
+  "name": "best_perormance",
+  "version": "1.0.0",
+  "description": "Best",
+  "main": "index.js",
+  "scripts": {
+    "test": "t"
+  },
+  "keywords": [
+    "best"
+  ],
+  "author": "sp",
+  "license": "ISC"
+}
