@@ -520,6 +520,8 @@ test('skip this test', async ({ page, browserName }) => {
 });
 ```
 #### 예시 2) 테스트에 태그를 추가하여 필터링된 테스트 케이스를 실행.
+
+
 1. `slow` 태그가 추가된 테스트 케이스를 작성합니다.
 ```javascript
   test('update todo status @slow', async ({ page }) => {
