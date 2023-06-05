@@ -10,14 +10,6 @@
   - [시작하기](#시작하기)
     - [로컬환경에서 테스트 코드 작성하기](#로컬환경에서-테스트-코드-작성하기)
   - [결론](#결론)
-- [사내 프로젝트 적용 방법](#사내-프로젝트-적용-방법)
-  - [프로젝트 시작 전](#프로젝트-시작-전)
-  - [프로젝트 진행](#프로젝트-진행)
-  - [어떻게 효율적으로 테스트코드를 작성할 수 있을까](#어떻게-효율적으로-테스트코드를-작성할-수-있을까)
-    - [1. 산출물을 우선하여 구현하십시오.](#1-산출물을-우선하여-구현하십시오)
-    - [2. 앱의 메인 기능에 집중하라!](#2-앱의-메인-기능에-집중하라)
-    - [3. 단순하지만 오래 걸리는 작업을 선정하라!](#3-단순하지만-오래-걸리는-작업을-선정하라)
-    - [4.  위험도/복잡도 기반 우선순위 결정](#4--위험도복잡도-기반-우선순위-결정)
   - [Playwright 특징 목록](#playwright-특징-목록)
     - [1. Test generator](#1-test-generator)
     - [2. Reporter](#2-reporter)
@@ -31,6 +23,20 @@
     - [9. 경량성](#9-경량성)
     - [10. 폭넓은 렌더링 엔진을 지원](#10-폭넓은-렌더링-엔진을-지원)
     - [11. 실험적 기능인 컴포넌트 테스팅](#11-실험적-기능인-컴포넌트-테스팅)
+    - [12. Annotations](#12-annotations)
+      - [예시 1) 파이어 폭스 브라우저 환경에서 테스트 skip을 목적으로 하는 테스트.](#예시-1-파이어-폭스-브라우저-환경에서-테스트-skip을-목적으로-하는-테스트)
+      - [예시 2) 테스트에 태그를 추가하여 필터링된 테스트 케이스를 실행.](#예시-2-테스트에-태그를-추가하여-필터링된-테스트-케이스를-실행)
+      - [예시 3) 사용자 설정된 주석으로 테스트 메타 데이터 관리](#예시-3-사용자-설정된-주석으로-테스트-메타-데이터-관리)
+    - [13. Videos](#13-videos)
+      - [Refer](#refer)
+- [사내 프로젝트 적용 방법](#사내-프로젝트-적용-방법)
+  - [프로젝트 시작 전](#프로젝트-시작-전)
+  - [프로젝트 진행](#프로젝트-진행)
+  - [어떻게 효율적으로 테스트코드를 작성할 수 있을까](#어떻게-효율적으로-테스트코드를-작성할-수-있을까)
+    - [1. 산출물을 우선하여 구현하십시오.](#1-산출물을-우선하여-구현하십시오)
+    - [2. 앱의 메인 기능에 집중하라!](#2-앱의-메인-기능에-집중하라)
+    - [3. 단순하지만 오래 걸리는 작업을 선정하라!](#3-단순하지만-오래-걸리는-작업을-선정하라)
+    - [4.  위험도/복잡도 기반 우선순위 결정](#4--위험도복잡도-기반-우선순위-결정)
 - [Advanced](#advanced)
   - [테스트 도입에 대한 개발자 관점](#테스트-도입에-대한-개발자-관점)
     - [1. 결국 QA팀, 개발팀의 검수가 필요하지 않을까?](#1-결국-qa팀-개발팀의-검수가-필요하지-않을까)
@@ -51,13 +57,17 @@
 
 <br />
 
-모든 개발자는 프로젝트가 커지면 커질수록 내가 쏘아 올린 작은 코드 조각이 전체 프로젝트에 미칠 영향을 걱정합니다. 이에 **Playwright**는 우리에게 확신을 줍니다. 
+모든 개발자는 프로젝트가 커지면 커질수록 수정된 적은 양의 코드가 전체 프로젝트에 미칠 영향을 걱정합니다. 이에 **Playwright**는 우리에게 확신을 줍니다. 
 >"너의 코드는 문제없어, 내가 보장할게."
 
 <br />
 
 대부분의 개발자들은 테스트 코드를 작성해야 하는 것을 너무나 잘 알고있습니다.  
-빠듯한 일정에 대부분 도입을 주저하죠 **Playwright**는 우리에게 확신을 줍니다.
+그리고 빠듯한 일정에 대부분 도입을 주저합니다. 
+**Playwright**는 코드 작성 자동화를 통해 편리함을 제공합니다.
+
+<br />
+
 > "페이지 좀 보자, 코드는 내가 만들게"
 
 <br />
@@ -65,7 +75,8 @@
 
 ## 수동으로 모든 테스트를 충족 시킬 수 없다.
 <br />
-테스트 자동화가 필요한 이유는 매 배포마다 수백 줄에 달하는 **단위 테스트 케이스 목록**을 수동으로 테스트하기에 한계가 있기 때문입니다.  
+
+테스트 자동화가 필요한 이유는 매 배포마다 수백 줄에 달하는 **단위테스트케이스목록** 을 수동으로 테스트하기에 한계가 있기 때문입니다.  
 
 -  테스트: **난 완벽주의 개발자!**  자부심을 갖고 꼼꼼하게 테스트합니다.
 - 두 번째 테스트: **종일 테스트할 수 있지** 지치지 않습니다. 테스트합니다. 
@@ -77,7 +88,8 @@
 <br />
 
 ## 그렇다면 도입시 어떤 가치를 얻을 수 있을까?
-<br />
+<br /> 
+
 1. 아예 수동 테스트를 진행하지 않을 수 있다.  
 프로젝트시 우리는 개발환경을 분리합니다. (개발, 베타, 출시)버전  
 다음과 같이 선택 할 수 있습니다.
@@ -90,7 +102,8 @@
 다양한 사용자 환경에서 테스트 할 수 있습니다.
 
 ### 도입시 예상되는 업무의 변화
-<br />
+<br /> 
+
 만약 클라이언트로 부터 카드 element 주위에 공백을 추가 해달라는 요구사항을 받았다면  
 다음과 같이 코드를 수정 할 수 있습니다.  
 
@@ -304,14 +317,7 @@ test.describe('Todo CRUD ', () => {
     await page.getByRole('row', { name: '밥을 먹는다. 미완료', exact: true }).locator('span').nth(1).click()
     await expect(page.getByRole('row', { name: '밥을 먹는다. 미완료' }).locator('label.el-checkbox')).not.toHaveClass(/is-checked/)
   })
-  test('update todo status', async ({ page }) => {
-    await createTwoTodo(page)
-    await page.getByRole('row', { name: '소금빵을 산다' }).getByRole('button', { name: '미완료' }).click()
-    await expect(page.getByRole('row', { name: '소금빵을 산다' })).not.toContainText(/미완료/)
-    await expect(page.getByRole('row', { name: '소금빵을 산다' })).toContainText(/완료/)
-    await page.getByRole('row', { name: '소금빵을 산다 완료' }).getByRole('button', { name: '완료' }).click()
-    await expect(page.getByRole('row', { name: '소금빵을 산다 미완료' })).toContainText(/미완료/)
-  })
+
   test('delete all todo', async ({ page }) => {
     await createTwoTodo(page)
     await page.getByRole('row', { name: '소금빵을 산다 미완료' }).locator('span').nth(1).click()
@@ -368,13 +374,190 @@ _row-class-name="data-test-row 속성 추가_
 <br />
 
 지금까지 가이드를 통해, 우리는 다음과 같은 사실을 알 수 있습니다.
-- 우리는 배포/로컬 서버를 통해 테스트 자동화 기능을 개발 할 수 있다.
-- 기본적인 테스트 코드들을 playwright 를 통해 자동 생성할 수 있다.
-- 테스트 결과, 에러정보를 산출물로 얻을 수 있다.
-- 스크린샷 기능을 통해, 테스트 케이스 전 후 비교된 산출물을 얻을 수 있다
+- 우리는 **배포/로컬 서버**를 통해 테스트 자동화 기능을 개발 할 수 있다.  
+
+- 기본적인 테스트 코드들을 playwright 를 통해 **자동 생성**할 수 있다.  
+- 테스트 결과, 에러정보를 **산출물**로 얻을 수 있다.
+- **스크린샷 기능**을 통해, 테스트 케이스 전 후 비교된 산출물을 얻을 수 있다
+
+다음은 Playwright의 기능들에 대해 살펴 보겠습니다.  
+
+---
+## Playwright 특징 목록
+
+<br />
+
+### 1. Test generator
+    브라우저와 상호작용을 통해 원하는 테스트 코드를 자동생성 할 수 있습니다.  
+    TDD 최대 난제 중 하나인 개발비용 단축에 대한 기능이자 핵심기능 중 하나입니다.
+
+아래 명령어를 실행하여, URL 주소에 대한 테스트 생성 기능을 테스트 해보세요.
+[관련문서](https://playwright.dev/docs/codegen)
+```bash
+$ npx playwright codegen {URL}
+$ npx playwright codegen --viewport-size=800,600  demo.playwright.dev/todomvc
+$ npx playwright codegen --device="iPhone 13" demo.playwright.dev/todomvc
+```
+
+~~테스트 커버리지를 계산, 모든 파일에 대한 테스트 파일 생성을 기대했으나... 실패~~
+
+
+### 2. Reporter
+    playwright는 진행된 테스트에 대한 레포트를 다양한 양식으로 지원합니다.  
+주요 양식은 다음과 같습니다.
+[관련문서](https://playwright.dev/docs/test-reporters)
+- HTML
+  - 파일(페이지) - 테스트 그룹 - 테스트 케이스로 분류된 목록
+  - pass/fail/skip 필터링
+  - 검색
+- Screenshot
+  - 테스트 코드중 설정에 따라 programmatic 또는 자동 으로 테스트 장면을 저장 가능
+- JSON/Custom Reporter
+  - 엑셀 라이브러리를 이용하여, 커스텀한 엑셀을 생성 및 제공 할 수 있습니다.
+  - 그 외 고객의 요구사항에 맞게 커스터마이징한 Reporter 를 제공 할 수 있습니다.
+  
+### 3. Debugging
+    vscode 익스텐션이 설치되어 있다면, 테스트 중 아래 기능들을 사용 할 수 있습니다.
+- breakpoint등 (builtin)디버깅 기능들을 사용 할 수 있습니다.
+- 실시간 브라우저 윈도우 와 IDE 를 비교하며 에러를 수정 할 수 있습니다.  
+
+### 4. API 테스트
+    REST API 통신과 관련된 테스트를 제공합니다.
+- E2E 와 별도로 API 테스트를 위해서 HTTP 통신을 통해 서버 테스트가 가능합니다.
+- E2E 테스트 도중, 혹은 setup/teardown 훅에서 자유롭게 HTTP 통신을 할 수 있습니다.
+- playwright는 모든 네트워크 트래픽에 대한 모니터링, 수정이 가능합니다.  
+
+#### 위 내용은 API 목업/프록시 테스트 또한 가능하다는 말과 같습니다.
+```javascript
+const browser = await chromium.launch({
+  proxy: {
+    server: 'http://myproxy.com:3128',
+    username: 'usr',
+    password: 'pwd'
+  }
+});
+```
+
+[관련문서](https://playwright.dev/docs/api-testing)
+### 5. Authenticate
+어떤 유저인증 전략이든, 유저 인증 정보를 브라우저 혹은 파일로 저장하게 됩니다.  
+`await page.context().storageState({ path: authFile });`
+
+우리는 계정정보를 파일로서 관리하고, 로그인 과정에 사용 할 수 있습니다.
+```javascript
+    await page.goto('https://github.com/login');
+    await page.getByLabel('Username or email address').fill(account.username);
+    await page.getByLabel('Password').fill(account.password);
+    await page.getByRole('button', { name: 'Sign in' }).click();
+    await page.waitForURL('https://github.com/');
+    await expect(page.getByRole('button', { name: 'View profile and more' })).toBeVisible();
+```
+위 코드는 저장된 계정을 통해 로그인하고, 쿠키가 저장된 상태로 홈페이지로의 리다이렉션을 대기하는 테스트 케이스를 작성 할 수 있습니다.
+### 6. Http Auth를 위한 예제
+```javascript
+const context = await browser.newContext({
+  httpCredentials: {
+    username: 'bill',
+    password: 'pa55w0rd',
+  },
+});
+const page = await context.newPage();
+await page.goto('https://example.com');
+```
+
+
+### 7. Trace viewer
+    Playwright는 테스트 항목들의 로그들을 zip파일로 저장합니다. 
+- 인터렉션 로그, 스냅샷(스크린샷), 
+- 테스트 소스 코드 ,  
+- 네트워크 로그
+- 테스트 사양, 환경
+- [관련문서](https://playwright.dev/docs/trace-viewer)  
+[trace.playwright.dev](https://trace.playwright.dev/) 링크 혹은
+아래 명령어를 사용하여, 정보를 확인 할 수 있습니다.  
+`$ npx playwright show-trace trace.zip`
+
+
+### 8. Inspector
+    익숙한 Vue Inspector처럼 Playwright 또한 GUI 툴을 제공합니다.
+
+- 클릭등의 인터랙션을 통하여 테스트의 생성, 정지,수정 녹화, 복사, 삭제. 언어변경이가능합니다.
+- 브라우저 엘리먼트의 selector를 실시간으로 추출 할 수 있습니다.
+- 브라우저 액션에 대한 로그를 확인 할 수 있습니다.
+
+### 9. 경량성
+E2E 테스트 라이브러리는 대체로 **무겁고, 느립니다.**  
+테스트 브라우저를 설치하고, 매 테스트마다 브라우저 엔진을 재가동, 재 렌더링해야 하기 때문입니다.  
+경험상 Cypress를 사용 했었을때 직관적이고 많은 기능을 가지고 있었지만 많은 기능을 가진 프레임워크 특징인  
+확장성문제, 커스터마이징 시간소요, 느린 속도로 인해 반드시 구현해야 했던 병렬처리등으로 진행중 삭제한 경험이 있습니다.  
+이에 **Playwright**는 cypress 패키지 사이즈 기준 **200배** 경량화된 용량, 훨씬 **빠른 체감속도**로, **최적화**에 많은 노력을 기울이고 있습니다.
+`Cypress(4.99 MB) > Nightwatch(webdriver required) > Playwright(24.2 kB)`
+
+### 10. 폭넓은 렌더링 엔진을 지원
+1. 크로미움, 웹킷, 파이어폭스, 
+2. 윈도우, 리눅스, MacOS
+3. headless, headed, 모바일 emulator(chrome for android, safari for ios)
+4. [관련 문서](https://playwright.dev/docs/browsers)
+
+### 11. 실험적 기능인 컴포넌트 테스팅
+문서 작성일 기준, vite, vue, pinia 에 대한 플러그인, 호환을 지원하지만  
+아직 실험적 기능이며, 컴포넌트 테스팅을 도입하기 위해서 추가 테스트가 필요합니다.
+[관련문서](https://playwright.dev/docs/test-components)
+
+### 12. Annotations
+Playwright는 `skip`, `failures`, `fixme`등 관리 가능한 **주석** 기능을 제공합니다.  
+**관리**는 조건 또는 필터를 통한 테스트 실행, 메타 데이터의 관리 가능을 의미합니다.  
+- [관련문서](https://playwright.dev/docs/test-annotations)
+- 주석은 테스트 혹은 테스트 그룹 일 수 있습니다.
+- 사전설정/조건에 따라 동적으로 적용 가능합니다.
+<br />
+
+아래 분류 별 예시를 확인하고 상세 내용은 [관련문서](https://playwright.dev/docs/test-annotations)를 참조 하십시오.  
+#### 예시 1) 파이어 폭스 브라우저 환경에서 테스트 skip을 목적으로 하는 테스트.
+```javascript
+test('skip this test', async ({ page, browserName }) => {
+  test.skip(browserName === 'firefox', 'Still working on it');
+});
+```
+#### 예시 2) 테스트에 태그를 추가하여 필터링된 테스트 케이스를 실행.
+1. `slow` 태그가 추가된 테스트 케이스를 작성합니다.
+```javascript
+  test('update todo status @slow', async ({ page }) => {
+    await createTwoTodo(page)
+    await page.getByRole('row', { name: '소금빵을 산다' }).getByRole('button', { name: '미완료' }).click()
+    await expect(page.getByRole('row', { name: '소금빵을 산다' })).not.toContainText(/미완료/)
+    await expect(page.getByRole('row', { name: '소금빵을 산다' })).toContainText(/완료/)
+    await page.getByRole('row', { name: '소금빵을 산다 완료' }).getByRole('button', { name: '완료' }).click()
+    await expect(page.getByRole('row', { name: '소금빵을 산다 미완료' })).toContainText(/미완료/)
+  })
+```
+2. 이후 위 태그에 해당하는 테스트만 실행할 수 있습니다.
+`npx playwright test --grep @slow`
+#### 예시 3) 사용자 설정된 주석으로 테스트 메타 데이터 관리
+메타데이터는 key(type)/value(description) 쌍으로 관리되며  
+[Reporter](#2-reporter)에서 보여질 수 있습니다.  
+
+### 13. Videos
+우린 테스트 항목들에 대한 녹화 기능을 이용할 수 있습니다.
+적용 방법은 아래와 같습니다.
+용량이 너무 크지 않도록 사이즈를 조절하세요
+```javascript
+import { defineConfig } from '@playwright/test';
+export default defineConfig({
+  use: {
+    video: {
+      mode: 'on-first-retry', 
+      size: { width: 640, height: 480 }
+    }
+  },
+});
+```
+#### Refer
+ - https://github.com/microsoft/playwright/issues/10855
+ - https://playwright.dev/docs/videos
 
 # 사내 프로젝트 적용 방법
-우리는 앞서 테스트의 필요성, Playwright 사용방법에 대하여 알아보았습니다.  
+우리는 앞서 테스트의 필요성, Playwright 사용방법 및 특징에 대하여 알아보았습니다.  
 
 어떤 방법으로 테스트를 우리 프로젝트에 효율적으로 적용 시킬수 있을지
 우리는 Playwright의 어떤 기능들을 더 이용 할 수 있을지 알아보겠습니다.
@@ -454,125 +637,6 @@ _row-class-name="data-test-row 속성 추가_
   기하급수적인 사용자 이탈률이 발생할 수 있습니다.
 
 <br />
-
-## Playwright 특징 목록
-
-<br />
-
-### 1. Test generator
-    브라우저와 상호작용을 통해 원하는 테스트 코드를 자동생성 할 수 있습니다.  
-    TDD 최대 난제 중 하나인 개발비용 단축에 대한 기능이자 핵심기능 중 하나입니다.
-
-아래 명령어를 실행하여, URL 주소에 대한 테스트 생성 기능을 테스트 해보세요.
-[관련문서](https://playwright.dev/docs/codegen)
-```bash
-$ npx playwright codegen {URL}
-$ npx playwright codegen --viewport-size=800,600  demo.playwright.dev/todomvc
-$ npx playwright codegen --device="iPhone 13" demo.playwright.dev/todomvc
-```
-
-~~테스트 커버리지를 계산, 모든 파일에 대한 테스트 파일 생성을 기대했으나... 실패~~
-
-
-### 2. Reporter
-    playwright는 진행된 테스트에 대한 레포트를 다양한 양식으로 지원합니다.  
-주요 양식은 다음과 같습니다.
-[관련문서](https://playwright.dev/docs/test-reporters)
-- HTML
-  - 파일(페이지) - 테스트 그룹 - 테스트 케이스로 분류된 목록
-  - pass/fail/skip 필터링
-  - 검색
-- Screenshot
-  - 테스트 코드중 설정에 따라 programmatic 또는 자동 으로 테스트 장면을 저장 가능
-- JSON/Custom Reporter
-  - 엑셀 라이브러리를 이용하여, 커스텀한 엑셀을 생성 및 제공 할 수 있습니다.
-  - 그 외 고객의 요구사항에 맞게 커스터마이징한 Reporter 를 제공 할 수 있습니다.
-  
-### 3. Debugging
-    vscode 익스텐션이 설치되어 있다면, 테스트 중 아래 기능들을 사용 할 수 있습니다.
-- breakpoint등 (builtin)디버깅 기능들을 사용 할 수 있습니다.
-- 실시간 브라우저 윈도우 와 IDE 를 비교하며 에러를 수정 할 수 있습니다.
-### 4. API 테스트
-    REST API 통신과 관련된 테스트를 제공합니다.
-- E2E 와 별도로 API 테스트를 위해서 HTTP 통신을 통해 서버 테스트가 가능합니다.
-- E2E 테스트 도중, 혹은 setup/teardown 훅에서 자유롭게 HTTP 통신을 할 수 있습니다.
-- playwright는 모든 네트워크 트래픽에 대한 모니터링, 수정이 가능합니다.
-#### 위 내용은 API 목업/프록시 테스트 또한 가능하다는 말과 같습니다.
-```javascript
-const browser = await chromium.launch({
-  proxy: {
-    server: 'http://myproxy.com:3128',
-    username: 'usr',
-    password: 'pwd'
-  }
-});
-```
-
-[관련문서](https://playwright.dev/docs/api-testing)
-### 5. Authenticate
-어떤 유저인증 전략이든, 유저 인증 정보를 브라우저 혹은 파일로 저장하게 됩니다.  
-`await page.context().storageState({ path: authFile });`
-
-우리는 계정정보를 파일로서 관리하고, 로그인 과정에 사용 할 수 있습니다.
-```javascript
-    await page.goto('https://github.com/login');
-    await page.getByLabel('Username or email address').fill(account.username);
-    await page.getByLabel('Password').fill(account.password);
-    await page.getByRole('button', { name: 'Sign in' }).click();
-    await page.waitForURL('https://github.com/');
-    await expect(page.getByRole('button', { name: 'View profile and more' })).toBeVisible();
-```
-위 코드는 저장된 계정을 통해 로그인하고, 쿠키가 저장된 상태로 홈페이지로의 리다이렉션을 대기하는 테스트 케이스를 작성 할 수 있습니다.
-### 6. Http Auth를 위한 예제
-```javascript
-const context = await browser.newContext({
-  httpCredentials: {
-    username: 'bill',
-    password: 'pa55w0rd',
-  },
-});
-const page = await context.newPage();
-await page.goto('https://example.com');
-```
-
-
-### 7. Trace viewer
-    Playwright는 테스트 항목들의 로그들을 zip파일로 저장합니다. 
-- 인터렉션 로그, 스냅샷(스크린샷), 
-- 테스트 소스 코드 ,  
-- 네트워크 로그
-- 테스트 사양, 환경
-- [관련문서](https://playwright.dev/docs/trace-viewer)  
-[trace.playwright.dev](https://trace.playwright.dev/) 링크 혹은
-아래 명령어를 사용하여, 정보를 확인 할 수 있습니다.  
-`$ npx playwright show-trace trace.zip`
-
-
-### 8. Inspector
-    익숙한 Vue Inspector처럼 Playwright 또한 GUI 툴을 제공합니다.
-
-- 클릭등의 인터랙션을 통하여 테스트의 생성, 정지,수정 녹화, 복사, 삭제. 언어변경이가능합니다.
-- 브라우저 엘리먼트의 selector를 실시간으로 추출 할 수 있습니다.
-- 브라우저 액션에 대한 로그를 확인 할 수 있습니다.
-
-### 9. 경량성
-E2E 테스트 라이브러리는 대체로 **무겁고, 느립니다.**  
-테스트 브라우저를 설치하고, 매 테스트마다 브라우저 엔진을 재가동, 재 렌더링해야 하기 때문입니다.  
-경험상 Cypress를 사용 했었을때 직관적이고 많은 기능을 가지고 있었지만 많은 기능을 가진 프레임워크 특징인  
-확장성문제, 커스터마이징 시간소요, 느린 속도로 인해 반드시 구현해야 했던 병렬처리등으로 진행중 삭제한 경험이 있습니다.  
-이에 **Playwright**는 cypress 패키지 사이즈 기준 **200배** 경량화된 용량, 훨씬 **빠른 체감속도**로, **최적화**에 많은 노력을 기울이고 있습니다.
-`Cypress(4.99 MB) > Nightwatch(webdriver required) > Playwright(24.2 kB)`
-
-### 10. 폭넓은 렌더링 엔진을 지원
-1. 크로미움, 웹킷, 파이어폭스, 
-2. 윈도우, 리눅스, MacOS
-3. headless, headed, 모바일 emulator(chrome for android, safari for ios)
-4. [관련 문서](https://playwright.dev/docs/browsers)
-
-### 11. 실험적 기능인 컴포넌트 테스팅
-문서 작성일 기준, vite, vue, pinia 에 대한 플러그인, 호환을 지원하지만  
-아직 실험적 기능이며, 컴포넌트 테스팅을 도입하기 위해서 추가 테스트가 필요합니다.
-[관련문서](https://playwright.dev/docs/test-components)
 
 # Advanced
 
