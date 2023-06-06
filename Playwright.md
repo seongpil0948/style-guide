@@ -1,7 +1,14 @@
 # Playwright 시작하기
 완벽한 어플리케이션을 제작하기 위한 개발자.  
 우리 프론트엔드 개발자들을 위한 문서입니다.
+
+## Prerequisite
+만약 당신이 [프론트엔드 테스팅 기본](./FrontendTest.md)를 읽지 않았다면
+읽고 오시길 바랍니다.
+
+
 - [Playwright 시작하기](#playwright-시작하기)
+  - [Prerequisite](#prerequisite)
 - [왜 Test, Playwright를 써야할까?](#왜-test-playwright를-써야할까)
   - [수동으로 모든 테스트를 충족 시킬 수 없다.](#수동으로-모든-테스트를-충족-시킬-수-없다)
   - [그렇다면 도입시 어떤 가치를 얻을 수 있을까?](#그렇다면-도입시-어떤-가치를-얻을-수-있을까)
@@ -335,7 +342,9 @@ async function createTwoTodo(page: Page) {
 <br />
 
 14. `.data-test-row` class 를 가진 row 목록을 받아오려 했지만 실패했습니다.  
-**important**: 테스트에 사용될 selector는 반드시 **data-test**를 prefix로 가져야 합니다.
+> 테스트에 사용될 selector는 반드시 **data-test**를 prefix로 가져야 합니다.
+> 즉 변경되지 않으며 JS/Css 와 **격리**된, 테스트 용도의 속성이어야 합니다.
+
 
 <br />
 
