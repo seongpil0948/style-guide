@@ -34,7 +34,7 @@
   - [프로젝트 진행](#프로젝트-진행)
   - [어떻게 효율적으로 테스트코드를 작성할 수 있을까](#어떻게-효율적으로-테스트코드를-작성할-수-있을까)
     - [1. 산출물을 우선하여 구현하십시오.](#1-산출물을-우선하여-구현하십시오)
-    - [2. 앱의 메인 기능에 집중하라!](#2-앱의-메인-기능에-집중하라)
+      - [1.1 앱의 메인 기능에 집중하라!](#11-앱의-메인-기능에-집중하라)
     - [3. 단순하지만 오래 걸리는 작업을 선정하라!](#3-단순하지만-오래-걸리는-작업을-선정하라)
     - [4.  위험도/복잡도 기반 우선순위 결정](#4--위험도복잡도-기반-우선순위-결정)
 - [Advanced](#advanced)
@@ -141,6 +141,7 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
     ```bash
     $ git clone git@github.com:socketbear/vue-dev-guide.git
     ```
+    <br />
 2. `$ pnpm dlx create-playwright` 를 입력하여 설치합니다.
     ```
     ✔ Where to put your end-to-end tests? · test/e2e
@@ -152,16 +153,18 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
     - 처음 설치한 경우 테스트 브라우저 엔진은 설치하지 않습니다.
 
 
-    ### 설치중 문제가 발생하였나요? 
-    리눅스(Ubuntu) 환경이라면 패키지 의존성 관련 에러가 발생 할 수 있습니다
-    > https://github.com/microsoft/playwright/issues/13738
-    ``` bash
-    $ pnpm exec playwright install --with-deps
-    or
-    $ npx playwright install --with-deps
-    ```
-    그럼에도 문제가 발생 할 경우, [공식 설치페이지](https://playwright.dev/docs/intro#installing-playwright)를 참고 하십시오.
+    - 설치중 문제가 발생하였나요? 
+      - 리눅스(Ubuntu) 환경이라면 패키지 의존성 관련 에러가 발생 할 수 있습니다
+      - > https://github.com/microsoft/playwright/issues/13738
+      - 아래 명령어를 사용하여 설치하세요.  
+        ``` bash
+          $ pnpm exec playwright install --with-deps
+          or
+          $ npx playwright install --with-deps
+        ```
+      - 그럼에도 문제가 발생 할 경우, [공식 설치페이지](https://playwright.dev/docs/intro#installing-playwright)를 참고 하십시오.
 
+<br />
 
 3. 설치 완료 확인을 위해 파일목록을 확인하세요.
    - 추가된 파일
@@ -181,7 +184,7 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
 <br />
 ![screenshot_2023-06-01_at_1.15.40_pm.png](/성필/screenshot_2023-06-01_at_1.15.40_pm.png)
 
-5. package.json 파일의 scripts 프로퍼티에 아래 명령어를 추가 하십시오.
+1. package.json 파일의 scripts 프로퍼티에 아래 명령어를 추가 하십시오.
     [관련문서](https://playwright.dev/docs/running-tests)
     ```json
         "test:e2e": "pnpm exec playwright test",
@@ -197,7 +200,8 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
     ![playwright-ui-allapssed.png](/성필/playwright-ui-allapssed.png)
 
 ### 로컬환경에서 테스트 코드 작성하기
-<br />
+    playwright는 주어진 URL를 입력하면, 상호 작용 가능한 Window를 제공합니다.
+    이것을 통해 우리는 앱을 테스트 하고, 상호작용 이력을 테스트코드로 자동 생성 할 수 있습니다.
 
 1. `playwright.config.ts` 파일을 열어 아래 옵션들을 추가합니다.
     ```typescript
@@ -227,31 +231,25 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
     ```
 <br />
 
-2. `$ pnpm run dev` 명령어로 로컬 서버를 실행시킵니다.
+1. `$ pnpm run dev` 명령어로 로컬 서버를 실행시킵니다.
 
-<br />
-3. 사진과 같이 vscode 익스텐션에서 경로를 포커싱하여 파일 위치를 지정합니다.
+<br />  
+
+3. 사진과 같이 vscode 익스텐션에서 경로를 클릭하여 생성 될 테스트 파일 위치를 지정합니다.  
 
 
 ![playwright-extnsion-main.png](/성필/playwright-extnsion-main.png)
 
-4. 하단의 `Record new` 버튼을 클릭합니다.
- 
-<br />
+4. 하단의 `Record new` 버튼을 클릭을 통해 새로운 파일을 생성, 상호작용 가능한 Window를 실행 시킵니다.
  
 5. 테스트 브라우저의 주소창에 `http://localhost:3333/guide/samp/el-todo` 를 입력합니다.
 
-<br />
-
-
-6. todo 항목을 입력하고 추가 테스트해 봅니다.
-
-<br />
-
+6. 페이지에서 todo 항목을 입력하고 추가 테스트해 봅니다.
 
 7. playwright - code generate 기능을 통해 테스트 코드가 생성되었음을 확인하세요
-		
     ```javascript
+    // test/e2e/
+    //  --| example.spec.ts    
     import { expect, test } from '@playwright/test'
 
     test('test', async ({ page }) => {
@@ -263,6 +261,9 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
       await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').fill('밥을 먹는다.')
     })
     ```
+
+<br />
+
 8. 좋습니다. 이제 생성된 2개의 todo목록에 대한 검증을 위한 코드를 한 줄 추가하겠습니다.  
     ```javascript
     expect((await page.$$('.data-test-row')).length).toEqual(2)
@@ -280,7 +281,6 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
 
 11.  그리고 todo 데이터를 생성하고, 미완료/완료로 상태변경하는 테스트를 작성 하십시오.
 
-
 <br />
 
 12.  같은 과정을 반복하여 다음과 같은 코드를 완성 할 수 있습니다.
@@ -290,6 +290,8 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
 
 
 ```javascript
+// test/e2e/
+//  --| example.spec.ts   
 import { type Page, expect, test } from '@playwright/test'
 // API: https://playwright.dev/docs/writing-tests#navigation
 
@@ -305,19 +307,6 @@ test.describe('Todo CRUD ', () => {
     expect((await page.$$('.data-test-row')).length).toEqual(2)
     await page.screenshot({ path: 'screenshots/todo/after-create.png', fullPage: true })
   })
-  test('update todo checkbox', async ({ page }) => {
-    await createTwoTodo(page)
-    await page.getByRole('row', { name: '소금빵을 산다 미완료' }).locator('span').nth(1).click()
-    await expect(page.getByRole('row', { name: '소금빵을 산다 미완료' }).locator('label.el-checkbox')).toHaveClass(/is-checked/)
-    await page.getByRole('row', { name: '밥을 먹는다. 미완료', exact: true }).locator('span').nth(1).click()
-    await expect(page.getByRole('row', { name: '밥을 먹는다. 미완료' }).locator('label.el-checkbox')).toHaveClass(/is-checked/)
-
-    await page.getByRole('row', { name: '소금빵을 산다 미완료' }).locator('span').nth(1).click()
-    await expect(page.getByRole('row', { name: '소금빵을 산다 미완료' }).locator('label.el-checkbox')).not.toHaveClass(/is-checked/)
-    await page.getByRole('row', { name: '밥을 먹는다. 미완료', exact: true }).locator('span').nth(1).click()
-    await expect(page.getByRole('row', { name: '밥을 먹는다. 미완료' }).locator('label.el-checkbox')).not.toHaveClass(/is-checked/)
-  })
-
   test('delete all todo', async ({ page }) => {
     await createTwoTodo(page)
     await page.getByRole('row', { name: '소금빵을 산다 미완료' }).locator('span').nth(1).click()
@@ -345,7 +334,7 @@ async function createTwoTodo(page: Page) {
 
 <br />
 
-14. `.data-test-row` class 를 가진 row 목록을 받아오려 했지만 실패했습니다.
+14. `.data-test-row` class 를 가진 row 목록을 받아오려 했지만 실패했습니다.  
 **important**: 테스트에 사용될 selector는 반드시 **data-test**를 prefix로 가져야 합니다.
 
 <br />
@@ -380,24 +369,28 @@ _row-class-name="data-test-row 속성 추가_
 - 테스트 결과, 에러정보를 **산출물**로 얻을 수 있다.
 - **스크린샷 기능**을 통해, 테스트 케이스 전 후 비교된 산출물을 얻을 수 있다
 
-다음은 Playwright의 기능들에 대해 살펴 보겠습니다.  
+<br />
 
----
 ## Playwright 특징 목록
+    Playwright 는 아래 다양한 특징들을 기반으로, 완전 관리형 e2e 환경을 제공합니다.
+
+### 1. Test generator
+<br />
+
+- 브라우저와 상호작용을 통해 원하는 테스트 코드를 자동생성 할 수 있습니다.  
+
+- TDD 최대 난제 중 하나인 개발비용 단축에 대한 기능이자 핵심기능 중 하나입니다.
 
 <br />
 
-### 1. Test generator
-    브라우저와 상호작용을 통해 원하는 테스트 코드를 자동생성 할 수 있습니다.  
-    TDD 최대 난제 중 하나인 개발비용 단축에 대한 기능이자 핵심기능 중 하나입니다.
-
 아래 명령어를 실행하여, URL 주소에 대한 테스트 생성 기능을 테스트 해보세요.
-[관련문서](https://playwright.dev/docs/codegen)
-```bash
-$ npx playwright codegen {URL}
-$ npx playwright codegen --viewport-size=800,600  demo.playwright.dev/todomvc
-$ npx playwright codegen --device="iPhone 13" demo.playwright.dev/todomvc
-```
+  [관련문서](https://playwright.dev/docs/codegen)  
+  
+  ```bash
+  $ npx playwright codegen {URL}
+  $ npx playwright codegen --viewport-size=800,600  demo.playwright.dev/todomvc
+  $ npx playwright codegen --device="iPhone 13" demo.playwright.dev/todomvc
+  ```
 
 ~~테스트 커버리지를 계산, 모든 파일에 대한 테스트 파일 생성을 기대했으나... 실패~~
 
@@ -467,7 +460,7 @@ await page.goto('https://example.com');
 
 
 ### 7. Trace viewer
-    Playwright는 테스트 항목들의 로그들을 zip파일로 저장합니다. 
+Playwright는 테스트 진행 로그들을 zip파일로 저장합니다. 
 - 인터렉션 로그, 스냅샷(스크린샷), 
 - 테스트 소스 코드 ,  
 - 네트워크 로그
@@ -520,8 +513,6 @@ test('skip this test', async ({ page, browserName }) => {
 });
 ```
 #### 예시 2) 테스트에 태그를 추가하여 필터링된 테스트 케이스를 실행.
-
-
 1. `slow` 태그가 추가된 테스트 케이스를 작성합니다.
 ```javascript
   test('update todo status @slow', async ({ page }) => {
@@ -606,12 +597,11 @@ export default defineConfig({
 
 ### 1. 산출물을 우선하여 구현하십시오.
 
-신뢰는 클라이언트로부터, 우리의 자신감 또한 클라이언트로부터 나옵니다..
-클라이언트 관점에서 사용자 요구정의서, 화면 정의서를 가장 우선하여 완성하고
+신뢰는 클라이언트로부터, 우리의 자신감 또한 클라이언트로부터 나옵니다.
+클라이언트의 사용자 요구정의서, 화면 정의서를 가장 우선하여 완성하고
 이 목록들만큼은 지켜내야 원만한 관계를 유지 할 수 있습니다.
 
-### 2. 앱의 메인 기능에 집중하라!
-
+#### 1.1 앱의 메인 기능에 집중하라!
 모든 서비스는 메인 서비스가 있고, 타겟층이 있습니다.
 예로 클라우드 사진 저장소 서비스(구글포토)를 제작한다면
 - 메인 서비스: 사진 관리(CRUD)
