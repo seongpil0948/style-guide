@@ -42,3 +42,4 @@
 # Refer
 - https://playwright.dev/docs/api/class-playwrightassertions#playwright-assertions-expect-generic
 - https://playwright.dev/docs/test-assertions
+- https://playwright.dev/docs/api/class-genericassertions
