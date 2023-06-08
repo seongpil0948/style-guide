@@ -7,8 +7,7 @@
 
 - [Playwright 시작하기](#playwright-시작하기)
   - [시작하기전에](#시작하기전에)
-- [왜 Test, Playwright를 써야할까?](#왜-test-playwright를-써야할까)
-  - [수동으로 모든 테스트를 충족 시킬 수 없다.](#수동으로-모든-테스트를-충족-시킬-수-없다)
+- [왜 Playwright를 써야할까?](#왜-playwright를-써야할까)
   - [구체적으로 뭐가 좋을까?](#구체적으로-뭐가-좋을까)
       - [다양한 사용자 환경 지원](#다양한-사용자-환경-지원)
       - [확장성과 반복성](#확장성과-반복성)
@@ -58,39 +57,21 @@
 - [5. Refer](#5-refer)
 
 
-# 왜 Test, Playwright를 써야할까?
-
-> 벽에 페인트를 던져 많은 부분의 벽을 칠할 수 있겠지만 브러시를 들고 벽에 오르지 않으면 모서리는 절대 칠하지 못할 것입니다.  
-
-**수동테스트**로 많은 테스트를 어느 정도의 확신과 진행 할 수 있겠지만 **자동화 테스트** 없이는 절대 서비스 전체를 감출 순 없을 것입니다.
-
-대부분의 개발자들은 테스트 코드를 작성해야 하는 것을 너무나 잘 알고있습니다.  
-그리고 빠듯한 일정에 대부분 도입을 주저합니다. 
-**Playwright**는 코드 작성 자동화를 통해 편리함을 제공합니다.
-
-> "페이지 좀 보자, 코드는 내가 만들게"  
-
-## 수동으로 모든 테스트를 충족 시킬 수 없다.
-
-테스트 자동화가 필요한 이유는 매 배포마다 수백 줄에 달하는 **단위테스트케이스목록** 을 수동으로 테스트하기에 한계가 있기 때문입니다.  
-
--  테스트: **난 완벽주의 개발자!**  자부심을 갖고 꼼꼼하게 테스트합니다.
-- 두 번째 테스트: **종일 테스트할 수 있지** 지치지 않습니다. 테스트합니다. 
-
-  ......
-
--  19 번째 테스트: ~~"input element 하나 추가한 건데 해야 해?.."~~ 테스트를 하긴 합니다.
-
-<br />
+# 왜 Playwright를 써야할까?
+    Playwright는 빠르고, 안정적인 테스트 자동화를 지원하는 Microsoft의 오픈소스 입니다.
+대부분의 개발자들은 테스트 코드를 작성해야 하는 것을 너무나 잘 알고있습니다.   
+그러나 빠듯한 일정에 대부분 도입을 주저합니다.  
+이에 **Playwright**는 다양한 기능들을 통해 빠르고 안정적인 테스트 자동화가 이루어 질 수 있도록 지원합니다.  
 
 ## 구체적으로 뭐가 좋을까?
-
 #### 다양한 사용자 환경 지원
 여러 버전 또는 다양한 환경에서 소프트웨어를 테스트해야 하는 경우 자동화된 테스트는 수동 테스트보다 훨씬 효율적입니다.   
 Playwright는 Chrome, Firefox, IPhone등 다양한 사용자 환경을 지원합니다.
 
 #### 확장성과 반복성
 자동화된 테스트는 큰 규모, 반복적인 작업 수행하는 데 탁월합니다.
+Playwright는 웹페이지 URL을 입력하고 유저의 행동을 바로 테스트 코드로 작성 하여 TODO
+
 #### 오류 감소와 일관성
 수동 테스트는 사람의 **실수**라는 리스크가 있지만, 자동화된 테스트는 미리 정의된 작업을 정확히 수행하므로 일관성과 정확성이 향상됩니다.  
 예상 결과와 실제 결과를 비교하여 오류를 식별하고 이에 대한 자세한 정보를 제공할 수 있습니다.
@@ -104,16 +85,16 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
 브라우저(Chrome, Firefox, Safari 등)를 제어하고   
 사용자의 행동(클릭, 키 입력, 네비게이션 등)을 시뮬레이션, 테스트하는 기능을 제공합니다.
 
-<br />
+
 
 ## 시작하기
-<br />
+
 
 1. 다음 명령어를 사용하여 vue 프로젝트를 생성합니다. 
     ```bash
     $ git clone git@github.com:socketbear/vue-dev-guide.git
     ```
-    <br />
+    
 2. `$ pnpm dlx create-playwright` 를 입력하여 설치합니다.
     ```
     ✔ Where to put your end-to-end tests? · test/e2e
@@ -136,7 +117,7 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
         ```
       - 그럼에도 문제가 발생 할 경우, [공식 설치페이지](https://playwright.dev/docs/intro#installing-playwright)를 참고 하십시오.
 
-<br />
+
 
 3. 설치 완료 확인을 위해 파일목록을 확인하세요.
    - 추가된 파일
@@ -153,7 +134,7 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
       ```
 
 4. vscode 에디터인경우 [익스텐션 설치](https://playwright.dev/docs/getting-started-vscode)를 참고해주세요. (하단 익스텐션 설치 완료시 화면)
-<br />
+
 ![screenshot_2023-06-01_at_1.15.40_pm.png](/성필/screenshot_2023-06-01_at_1.15.40_pm.png)
 
 1. package.json 파일의 scripts 프로퍼티에 아래 명령어를 추가 하십시오.
@@ -201,11 +182,11 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
       },
     }
     ```
-<br />
+
 
 1. `$ pnpm run dev` 명령어로 로컬 서버를 실행시킵니다.
 
-<br />  
+  
 
 3. 사진과 같이 vscode 익스텐션에서 경로를 클릭하여 생성 될 테스트 파일 위치를 지정합니다.  
 
@@ -234,26 +215,26 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
     })
     ```
 
-<br />
+
 
 8. 좋습니다. 이제 생성된 2개의 todo목록에 대한 검증을 위한 코드를 한 줄 추가하겠습니다.  
     ```javascript
     expect((await page.$$('.data-test-row')).length).toEqual(2)
     ```
 
-<br />
+
 
 9. 다시 마우스 커서를 test 함수 내부로 위치시킵니다. 
 
-<br />
+
 
 10. `Record new`하단의 `Record at cursor`를 클릭합니다.
 
-<br />
+
 
 11.  그리고 todo 데이터를 생성하고, 미완료/완료로 상태변경하는 테스트를 작성 하십시오.
 
-<br />
+
 
 12.  같은 과정을 반복하여 다음과 같은 코드를 완성 할 수 있습니다.
 - 체크박스 상태변경
@@ -297,21 +278,21 @@ async function createTwoTodo(page: Page) {
 }
 ```
 
-<br />
+
 
 13. 명령어를 통해 방금 만들 코드를 실행해 봅시다.
 `pnpm run test:e2e test/e2e/test-1.spec.ts`
 저런 테스트가 실패하며 Playwright Test Report 타이틀을 가진 사이트가 열립니다.
 ![screenshot_2023-06-01_at_2.40.35_pm.png](/성필/screenshot_2023-06-01_at_2.40.35_pm.png)
 
-<br />
+
 
 14. `.data-test-row` class 를 가진 row 목록을 받아오려 했지만 실패했습니다.  
 > 테스트에 사용될 selector는 반드시 **data-test**를 prefix로 가져야 합니다.
 > 즉 변경되지 않으며 JS/Css 와 **격리**된, 테스트 용도의 속성이어야 합니다.
 
 
-<br />
+
 
 15. src/guide/pages/samp/el-todo.vue 파일의 el-table 엘리먼트의 속성()을 추가합니다.
 _row-class-name="data-test-row 속성 추가_
@@ -319,22 +300,22 @@ _row-class-name="data-test-row 속성 추가_
 <el-table data-test-id="todo-table" :data="todoList" style="width: 100%" row-class-name="data-test-row">
 ```
 
-<br />
+
 
 16. 다시 11번 과정을 테스트 합니다.
 
-<br />
+
 
 17.  테스트 성공 결과 확인
 
-<br />
+
 
 18.  screenshots 폴더에서 테스트 중 얻은 스크린샷을 확인합니다.
 
-<br />
+
 
 ## 결론
-<br />
+
 
 지금까지 가이드를 통해, 우리는 다음과 같은 사실을 알 수 있습니다.
 - 우리는 **배포/로컬 서버**를 통해 테스트 자동화 기능을 개발 할 수 있다.  
@@ -343,19 +324,19 @@ _row-class-name="data-test-row 속성 추가_
 - 테스트 결과, 에러정보를 **산출물**로 얻을 수 있다.
 - **스크린샷 기능**을 통해, 테스트 케이스 전 후 비교된 산출물을 얻을 수 있다
 
-<br />
+
 
 ## Playwright 특징 목록
     Playwright 는 아래 다양한 특징들을 기반으로, 완전 관리형 e2e 환경을 제공합니다.
 
 ### 1. Test generator
-<br />
+
 
 - 브라우저와 상호작용을 통해 원하는 테스트 코드를 자동생성 할 수 있습니다.  
 
 - TDD 최대 난제 중 하나인 개발비용 단축에 대한 기능이자 핵심기능 중 하나입니다.
 
-<br />
+
 
 아래 명령어를 실행하여, URL 주소에 대한 테스트 생성 기능을 테스트 해보세요.
   [관련문서](https://playwright.dev/docs/codegen)  
@@ -477,7 +458,7 @@ Playwright는 `skip`, `failures`, `fixme`등 관리 가능한 **주석** 기능�
 - [관련문서](https://playwright.dev/docs/test-annotations)
 - 주석은 테스트 혹은 테스트 그룹 일 수 있습니다.
 - 사전설정/조건에 따라 동적으로 적용 가능합니다.
-<br />
+
 
 아래 분류 별 예시를 확인하고 상세 내용은 [관련문서](https://playwright.dev/docs/test-annotations)를 참조 하십시오.  
 #### 예시 1) 파이어 폭스 브라우저 환경에서 테스트 skip을 목적으로 하는 테스트.
@@ -530,7 +511,7 @@ export default defineConfig({
 우리는 Playwright의 어떤 기능들을 더 이용 할 수 있을지 알아보겠습니다.
 
 ## 프로젝트 시작 전
-<br />
+
 
 - 이용중인 [프레임 워크](https://github.com/socketbear/vue-dev-guide)에 설정 및 예시파일을 적용 합니다.
 	- playwright.config.ts 
@@ -539,7 +520,7 @@ export default defineConfig({
 
 
 ## 프로젝트 진행
-<br />
+
 
 1. 각자 프로젝트의 **클라이언트가** 요구하는 산출물 양식에 따라, [Custom Reporter](https://playwright.dev/docs/test-reporters#custom-reporters)를 제작합니다.
 	- 다음은 [builtin](#reporter) 외 제작이 예상되는 리포터 입니다.  
@@ -602,15 +583,15 @@ export default defineConfig({
 - 발생시 심각도: [앱의 메인 기능](#앱의-메인-기능에-집중하라)이나 랜딩 페이지에서 문제가 발생할 경우  
   기하급수적인 사용자 이탈률이 발생할 수 있습니다.
 
-<br />
+
 
 # Advanced
 
-<br />
+
 
 ## 테스트 도입에 대한 개발자 관점
 
-<br />
+
 
 ### 1. 결국 QA팀, 개발팀의 검수가 필요하지 않을까?
 
@@ -618,7 +599,7 @@ export default defineConfig({
 클라이언트 요구사항에 적합한지등 다양한 면에서,  
 QA 테스트가 월등하지만 다음과 같은 한계가 있습니다.
 
-<br />
+
 
 ### 2.  변수 시나리오 Chaining에 대한 제한
 
@@ -633,7 +614,7 @@ QA 테스트가 월등하지만 다음과 같은 한계가 있습니다.
 이처럼 유저 시나리오 관점의 테스트는 왠만한 QA테스트 만으로는 제한이 있습니다.
 ![screenshot_2023-06-01_at_10.28.49_am.png](/screenshot_2023-06-01_at_10.28.49_am.png)
 
-<br />
+
 
 ###  리소스에 대한 보장의 어려움
 
@@ -693,12 +674,12 @@ const unsubscribeAuth = authStore.$onAction(
 
 ## 클라이언트 관점
 
-<br />
+
 
 ### 클라이언트는 기술을 가진 회사를 신뢰합니다.
 - 규모가 큰 회사 일수록 더욱 중요시 생각하는 __소프트웨어 테스트 자동화__ 기술은 소유한 업체에 대하여 각종 포트폴리오, 디자인등 문서에 더하여 큰 선정 고려요소이자, 신뢰를 제공 할 수 있는 대표적인 방법 중 하나입니다.
 
-<br />
+
 
 ### 클라이언트는 산출물이 필요합니다.
 - 개발업체를 선정하는 부분에 있어, 업체 별 산출물의 정리과정중 __소프트웨어 테스트__ 관련 문서는 고려대상이 아닐 수 없습니다.
@@ -707,7 +688,7 @@ const unsubscribeAuth = authStore.$onAction(
 우리는 __playwright__ 의 [reporter](#reporter) 기능을 통해,
 고객에 맞는 산출물을 제공 할 수 있습니다.
 
-<br />
+
 
 ### 결국 신뢰를 얻습니다.
 **처음** 파트너쉽을 맺은 경우, 신중한 클라이언트들은 테스트의 결과를 믿지 못할 수 있습니다.
@@ -715,7 +696,7 @@ const unsubscribeAuth = authStore.$onAction(
 - 커뮤니케이션 입장에서 매우 **효율적이고 안정적인 업무**가 가능합니다.
 - 장기적인 파트너쉽 유지에 도움이 됩니다.
 
-<br />
+
 
 ## 그래서 왜 Playwright?
 먼저 vitest, vue3는 unit, component 공식 unit/component 테스트 라이브러리로 vitest를 사용하고 있습니다.  
