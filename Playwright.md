@@ -15,6 +15,11 @@
       - [빠른 피드백](#빠른-피드백)
 - [Playwright란?](#playwright란)
   - [시작하기](#시작하기)
+    - [결과 살펴보기](#결과-살펴보기)
+      - [1. 행동(Action) 타임라인](#1-행동action-타임라인)
+      - [2. 행동 목록](#2-행동-목록)
+      - [3. 행동 뷰어](#3-행동-뷰어)
+      - [4. 추적 정보 뷰어](#4-추적-정보-뷰어)
     - [로컬환경에서 테스트 코드 작성하기](#로컬환경에서-테스트-코드-작성하기)
   - [결론](#결론)
   - [Playwright 특징 목록](#playwright-특징-목록)
@@ -35,12 +40,12 @@
       - [예시 2) 테스트에 태그를 추가하여 필터링된 테스트 케이스를 실행.](#예시-2-테스트에-태그를-추가하여-필터링된-테스트-케이스를-실행)
       - [예시 3) 사용자 설정된 주석으로 테스트 메타 데이터 관리](#예시-3-사용자-설정된-주석으로-테스트-메타-데이터-관리)
     - [13. Videos](#13-videos)
+  - [그래서 왜 Playwright?](#그래서-왜-playwright)
 - [Refer](#refer)
 
 
 # 왜 Playwright를 써야할까?
-    Playwright는 빠르고, 안정적인 테스트 자동화를 지원하는 Microsoft의 오픈소스 입니다.  
-
+    Playwright는 빠르고, 안정적인 테스트 자동화를 지원하는 Microsoft의 오픈소스 입니다.
 대부분의 개발자들은 테스트 코드를 작성해야 하는 것을 너무나 잘 알고있습니다.   
 그러나 빠듯한 일정에 대부분 도입을 주저합니다.  
 이에 **Playwright**는 다양한 기능들을 통해 빠르고 안정적인 테스트 자동화가 이루어 질 수 있도록 지원합니다.  
@@ -94,18 +99,23 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
 3. 설치 완료 확인을 위해 파일목록을 확인하세요.
    - 추가된 파일
       ```
-      playwright.config.ts
-      test/e2e/
-      tests-examples/
+      playwright.config.ts: playwright 설정파일
+      test/e2e/: e2e 예시 파일
+      tests-examples: 데모 TODO 앱 e2e 테스트 폴더
       ```
     - 수정된 파일
       ```
-      .gitignore
-      package.json
+      .gitignore : playwright관련 출력 파일 목록 추가
+      package.json : "@playwright/test" 패키지 추가
       pnpm-lock.yaml
       ```
 
 4. vscode 에디터인경우 [익스텐션 설치](https://playwright.dev/docs/getting-started-vscode)을 설치해야 합니다.
+	1. 익스텐션 아이콘을 눌러 목록으로 이동합니다.
+![install_extension2.png](/성필/playwright/install_extension2.png)
+	2. install 버튼을 클릭하여 설치합니다.
+![playwright_extension.png](/성필/playwright/playwright_extension.png)
+
 
 5. package.json 파일의 scripts 프로퍼티에 아래 명령어를 추가 하십시오.
     [관련문서](https://playwright.dev/docs/running-tests)
@@ -117,142 +127,194 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
         "test:e2e:gen": "pnpm exec playwright codegen",
     ```
 6. `pnpm run test:e2e:ui` 를 실행하면 아래 사진과 같이 윈도우를 확인할 수 있습니다.
-    ![playwright-ui-home.png](/성필/playwright-ui-home.png)
-7. 위사진의 Run 버튼을 눌러주세요.
-    아래와 같이 뜬다면, **축하합니다!** 당신은 테스트 코드의 실행을 완료한 것입니다!
+    ![ui_mode_blank.png](/성필/playwright/ui_mode_blank.png)
+7. 위사진의 좌측 사이드바의 테스트 케이스 목록을 클릭하여 재생(Run) 버튼을 눌러주세요.
+    아래와 같이 녹색 체크 표시가 보인다면, **축하합니다** 당신은 테스트에 성공했습니다!
     ![playwright-ui-allapssed.png](/성필/playwright-ui-allapssed.png)
 
+### 결과 살펴보기
+우리가 이전 단계에서 실행한 테스트한 정보를 확인 하겠습니다.  
+모든 테스트 파일이 테스트 사이드바에 로드되어 각 파일을 확장하고  
+블록을 설명하여 각 테스트를 개별적으로 실행, 보기, 보기 및 디버그할 수 있습니다.  
+
+**텍스트** 또는 **@tag** 또는 통과, 실패 및 건너뛴 테스트뿐만 아니라.  
+playwright.config 파일에 설정된 프로젝트별로 테스트를 필터링 할 수 있습니다. 
+![filter_list.png](/성필/playwright/filter_list.png)
+
+우리는 테스트의 전체 추적정보(trace)를 확인하고 각 작업 위에 앞뒤로 마우스를 올려(hover) 
+각 단계에서 무슨 일이 발생했는지 확인하고 DOM 스냅샷을 별도의 창으로 팝업하여 디버깅 환경을 개선할 수 있습니다.
+![test_ui.png](/test_ui.png)
+#### 1. 행동(Action) 타임라인
+테스트가 진행된 타임라인입니다. 클릭 후 마우스 이동으로 테스트가 어떻게 진행되었는지 UI로 확인 할 수 있습니다.
+
+#### 2. 행동 목록
+테스트간 진행된 행동 목록입니다 클릭시, 행동에 대한 추적(trace)정보 가 UI에 표시됩니다.
+
+#### 3. 행동 뷰어
+테스트 액션에 대한 추적 정보를 UI로 표시하는 인터랙티브 뷰어입니다.
+뷰어의 특정 엘리먼트를 클릭하여 해당 셀렉터를 복사 할 수 있습니다.
+
+#### 4. 추적 정보 뷰어
+각 행동 또는 테스트전체에 대한 테스트코드, 콘솔로그, 테스트로그, 네트워크 로그를 확인 할 수 있습니다.
 ### 로컬환경에서 테스트 코드 작성하기
     playwright는 주어진 URL를 입력하면, 상호 작용 가능한 Window를 제공합니다.
     이것을 통해 우리는 앱을 테스트 하고, 상호작용 이력을 테스트코드로 자동 생성 할 수 있습니다.
 
-1. `playwright.config.ts` 파일을 열어 아래 옵션들을 추가합니다.
+1. 테스트 결과를 엑셀로 표시 할 수 있는 사내제작, xlsx 패키지를 설치합니다.  
+
+    ```
+    $ pnpm install -D playwright-excel-reporter xlsx@https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz
+    ```
+
+2. `playwright.config.ts` 파일을 열어 아래 코드들을 붙여넣습니다.
     ```typescript
-    {
+    import { defineConfig, devices } from '@playwright/test'
+    import type { IExcelConfig } from 'playwright-excel-reporter'
+
+    export default defineConfig({
+      testDir: './test/e2e',
+      /* 테스트를 병렬로 실행합니다. */
+      fullyParallel: true,
+      /* CI 환경에서만 실패시 2회 재시도합니다. */
+      retries: process.env.CI ? 2 : 0,
+      /* 각 프로세스당 할당되는 스레드 수, 워커 단위로 테스트가 실행됩니다.  */
+      workers: process.env.CI ? 1 : undefined,
+      /* 테스트 산출물을 지정 할 수 있습니다. 더 많은 정보는 [관련링크](https://playwright.dev/docs/test-reporters)를 참고하세요 */
+      reporter: [
+        ['html', {
+          outputFolder: 'playwright-result-html',
+          outputFile: 'result.html',
+        }],
+        ['playwright-excel-reporter', {
+          // excelInputPath: 'test/asset/unit-test-case.xlsx',
+          // excelStartRow: 5,
+          // caseSheetName: '블라인드',
+          // excelOutputDir: 'excel-reporter-result',
+          // excelOutputFileName: 'result.xlsx',
+        } as Partial<IExcelConfig>],
+      ],
+      /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
       use: {
         /* Base URL 은 도메인을 입력 하지않았을때 다음과 같이 사용합니다. `await page.goto('/')`. */
         baseURL: 'http://localhost:3333',
+
         /*  trace 테스트가 실패하면 에러관련 정보를 저장합니다. 관련문서:  https://playwright.dev/docs/trace-viewer */
         trace: 'on-first-retry',
-      },  
-      webServer: {
-        /**
-         * Use the dev server by default for faster feedback loop.
-        * Use the preview server on CI for more realistic testing.
-        Playwright will re-use the local server if there is already a dev-server running.
-        */
-        // command: process.env.CI ? 'vite preview --port 3333' : 'vite dev',
-        command: process.env.CI ? ' pnpm run preview --port 3333' : 'vite dev',
-        port: 3333,
-        reuseExistingServer: !process.env.CI,
       },
-    }
-    ```
 
-2. `$ pnpm run dev` 명령어로 로컬 서버를 실행시킵니다.
+      /* 테스트 환경을 설정합니다. */
+      projects: [
+        {
+          name: 'chromium',
+          use: { ...devices['Desktop Chrome'] },
+        },
 
-3. 사진과 같이 vscode 익스텐션에서 경로를 클릭하여 생성 될 테스트 파일 위치를 지정합니다.  
-
-![playwright-extnsion-main.png](/성필/playwright-extnsion-main.png)
-
-4. 하단의 `Record new` 버튼을 클릭을 통해 새로운 파일을 생성, 상호작용 가능한 Window를 실행 시킵니다.
- 
-5. 테스트 브라우저의 주소창에 `http://localhost:3333/guide/samp/el-todo` 를 입력합니다.
-
-6. 페이지에서 todo 항목을 입력하고 추가 테스트해 봅니다.
-
-7. playwright - code generate 기능을 통해 테스트 코드가 생성되었음을 확인하세요
-    ```javascript
-    // test/e2e/
-    //  --| example.spec.ts    
-    import { expect, test } from '@playwright/test'
-
-    test('test', async ({ page }) => {
-      await page.goto('http://localhost:3333/guide/samp/el-todo')
-      await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').click()
-      await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').fill('소금빵을 산다')
-      await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').press('Enter')
-      await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').click()
-      await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').fill('밥을 먹는다.')
+        {
+          name: 'firefox',
+          use: { ...devices['Desktop Firefox'] },
+        },
+      ],
     })
     ```
 
-8. 좋습니다. 이제 생성된 2개의 todo목록에 대한 검증을 위한 코드를 한 줄 추가하겠습니다.  
-    ```javascript
-    expect((await page.$$('.data-test-row')).length).toEqual(2)
-    ```
+2. 로컬 서버를 실행시킵니다.
 
-9. 다시 마우스 커서를 test 함수 내부로 위치시킵니다. 
+    `$ pnpm run dev`
 
-10. `Record new`하단의 `Record at cursor`를 클릭합니다.
+3. 새로운 테스트 파일을 생성합니다. 
+	
+  	`$ touch test/e2e/el-todo.spec.ts`
+  
+4. 다음 코드를 붙여넣습니다. 
+```typescript
+import { expect, test } from '@playwright/test'
 
-11.  그리고 todo 데이터를 생성하고, 미완료/완료로 상태변경하는 테스트를 작성 하십시오.
-
-12.  같은 과정을 반복하여 다음과 같은 코드를 완성 할 수 있습니다.
-- 체크박스 상태변경
-- todo 데이터 삭제 테스트를 진행 검증코드 추가
-- 어려울 경우 아래 코드를 복사하여 붙여 넣으세요
-
-
-```javascript
-// test/e2e/
-//  --| example.spec.ts   
-import { type Page, expect, test } from '@playwright/test'
-// API: https://playwright.dev/docs/writing-tests#navigation
-
+// "Todo CRUD"라는 테스트 그룹과 하위 케이스 "create todo" 
 const MAIN_ROUTE = 'http://localhost:3333/guide/samp/el-todo'
 test.describe('Todo CRUD ', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto(MAIN_ROUTE) // Go to the starting url before each test.
-  })
   test('create todo', async ({ page }) => {
-    await page.waitForSelector('[data-test-id="todo-table"]')
+    await page.goto(MAIN_ROUTE)
     await page.screenshot({ path: 'screenshots/todo/before-create.png', fullPage: true })
-    await createTwoTodo(page)
-    expect((await page.$$('.data-test-row')).length).toEqual(2)
-    await page.screenshot({ path: 'screenshots/todo/after-create.png', fullPage: true })
-  })
-  test('delete all todo', async ({ page }) => {
-    await createTwoTodo(page)
-    await page.getByRole('row', { name: '소금빵을 산다 미완료' }).locator('span').nth(1).click()
-    await page.getByRole('row', { name: '밥을 먹는다. 미완료' }).locator('span').nth(1).click()
-    await page.getByRole('button', { name: '삭제' }).click()
+
+    await page.screenshot({ path: 'screenshots/todo/after-create.png', fullPage: true })    
   })
 })
+```
+5. 커서를 `await page.goto(MAIN_ROUTE)` 하단 9번 라인에 위치 시킵니다.
+    ![record_at_cursor.png](/성필/record_at_cursor.png)
+6. 상단 사진의 1, 2번을 차례로 클릭하여 상호작용 가능한 Window를 실행시킵니다.
 
-async function createTwoTodo(page: Page) {
-  await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').click()
-  await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').fill('소금빵을 산다')
-  await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').press('Enter')
-  await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').click()
-  await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').fill('밥을 먹는다.')
-  await page.getByRole('button', { name: '추가' }).click()
-}
+7. 테스트 브라우저의 주소창에 `http://localhost:3333/guide/samp/el-todo` 입력하여 이동합니다.
+
+8. 페이지에서 todo 항목을 입력하고 추가 버튼을 눌러 **데이터 2건 생성**을 테스트 해보십시오.
+
+9. playwright - code generate 기능을 통해 테스트 코드가 생성되었음을 확인하세요  
+	 **만약 조금 이상하거나 다르다면 아래 코드를 붙여넣으세요.**
+	
+    ```javascript
+    // test/e2e/
+    //  --| el-todo.spec.ts
+    import { expect, test } from '@playwright/test'
+
+    test.describe('Todo CRUD ', () => {
+      test('create todo', async ({ page }) => {
+        await page.goto('http://localhost:3333/guide/samp/el-todo')
+
+        await page.screenshot({ path: 'screenshots/todo/before-create.png', fullPage: true })
+        
+        await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').click()
+        await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').fill('소금빵을 산다')
+        await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').press('Enter')
+        await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').click()
+        await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').fill('밥을 먹는다.')
+
+        await page.screenshot({ path: 'screenshots/todo/after-create.png', fullPage: true })  
+        
+      })
+    })
+    ```
+
+10.  좋습니다. 이제 생성된 2개의 todo목록에 대한 검증을 위한 코드를 16번 라인에 추가하겠습니다.  
+```javascript
+		// 할 일 목록 테이블에 2개의 행이 존재하는지 검증하는 코드
+    expect((await page.$$('.data-test-row')).length).toEqual(2)
 ```
 
-13. 명령어를 통해 방금 만들 코드를 실행해 봅시다.
-`pnpm run test:e2e test/e2e/test-1.spec.ts`
-저런 테스트가 실패하며 Playwright Test Report 타이틀을 가진 사이트가 열립니다.
-![screenshot_2023-06-01_at_2.40.35_pm.png](/성필/screenshot_2023-06-01_at_2.40.35_pm.png)
+11. 테스트 UI를 통해 테스트를 실행합니다.   
+		1. `pnpm run test:e2e:ui`  
+		2. ![run_create_todo_test.png](/성필/run_create_todo_test.png)
+12. 저런 테스트가 실패했습니다! 살펴봅시다.  **[사진 12]**  
+![ui-test-fail.png](/성필/ui-test-fail.png)
+    1. 실패한 테스트 목록을 확인 할 수 있습니다.
+    2. 에러메세지를 확인 결과: 행이 2개가 아니라 0개로 잡힙니다.
+    3. 테스트 진행 중 화면을 확인하니 행이 한개가 있습니다.
 
 
-14. `.data-test-row` class 를 가진 row 목록을 받아오려 했지만 실패했습니다.  
-> 테스트에 사용될 selector는 반드시 **data-test**를 prefix로 가져야 합니다.
-> 즉 변경되지 않으며 JS/Css 와 **격리**된, 테스트 용도의 속성이어야 합니다.
+두 번째 행을 추가하는 테스트 코드 작성과  
+`.data-test-row` class 를 가진 row 목록을 받아오는 코드의 수정이 필요합니다.
 
+13. 두 번째 행을 추가하는 테스트 코드 작성
+    1.  3번의 탭목록중 Pick locator를 클릭합니다.
+    2.  그리고 화면의 추가 버튼을 클릭합니다.
+    3.  ![add_todo.png](/성필/add_todo.png)
+    4. **사진 12.4** 부분에서 복사, 파일열기 아이콘을 차례대로 누릅니다.
+    5. 테스트코드에 `click` 기능과 함께 추가합니다.
+    6. ```typescript
+        await page.getByPlaceholder('TO-DO 항목을 입력해주세요.').fill('밥을 먹는다.')
+        await page.getByRole('button', { name: '추가' }).click()
+        expect((await page.$$('.data-test-row')).length).toEqual(2)
+        ```
+14. `.data-test-row` class 를 가진 row 목록을 받아오는 코드의 수정
+> 테스트에 사용될 selector는 반드시 **data-test**를 prefix로 가져야 합니다.   
+> 즉 변경되지 않으며 JS/Css 와 **격리**된, 테스트 용도의 속성이어야 합니다.  
+ `src/guide/pages/samp/el-todo.vue` 파일 - `el-table` 엘리먼트의 속성을 추가합니다.          
+  ```html
+  <!-- row-class-name="data-test-row 속성 추가 -->
+  <el-table data-test-id="todo-table" :data="todoList" style="width: 100%" row-class-name="data-test-row">
+  ```
 
-15. src/guide/pages/samp/el-todo.vue 파일의 el-table 엘리먼트의 속성()을 추가합니다.
-_row-class-name="data-test-row 속성 추가_
-```
-<el-table data-test-id="todo-table" :data="todoList" style="width: 100%" row-class-name="data-test-row">
-```
-
-16. 다시 11번 과정을 테스트 합니다.
-
-17.  테스트 성공 결과 확인
-
-18.  screenshots 폴더에서 테스트 중 얻은 스크린샷을 확인합니다.
-
+15.  다시 테스트를 진행, 성공을 확인합니다.
+16.  screenshots 폴더에서 테스트 중 얻은 스크린샷을 확인합니다.
 
 ## 결론
 
@@ -263,11 +325,11 @@ _row-class-name="data-test-row 속성 추가_
 - 테스트 결과, 에러정보를 **산출물**로 얻을 수 있다.
 - **스크린샷 기능**을 통해, 테스트 케이스 전 후 비교된 산출물을 얻을 수 있다
 
+
 ## Playwright 특징 목록
     Playwright 는 아래 다양한 특징들을 기반으로, 완전 관리형 e2e 환경을 제공합니다.
 
 ### 1. Test generator
-
 - 브라우저와 상호작용을 통해 원하는 테스트 코드를 자동생성 할 수 있습니다.  
 
 - TDD 최대 난제 중 하나인 개발비용 단축에 대한 기능이자 핵심기능 중 하나입니다.
@@ -432,6 +494,16 @@ export default defineConfig({
   },
 });
 ```
+
+## 그래서 왜 Playwright?
+먼저 vitest, vue3는 unit, component 공식 unit/component 테스트 라이브러리로 vitest를 사용하고 있습니다.  
+하지만 vite, vue 모두 SPC 를 위한 툴이며, vitest는 SPC, Client-Side Rendering 가 아닌 환경에서는 component 테스팅조차 의도대로 동작하지 않습니다.  
+
+이에 nuxt는 nuxt/test-utils 특히 vue는 playwright 전 cypress에 대한 복잡한 세팅과정을 CLI 사전 세팅을 통해 해결하려 했지만 라이브러리 자체의 문제인 진입장벽, 개발비용, 복잡한 셋업 과정을 커버 할 순 없었습니다. 
+
+그동안 e2e 테스트는 unit test 보다 앱에대한 자신감을 가질 수 있지만, 
+훨씬 더 요구되는 개발비용으로 인해 도입이 어려웠었던 것이 현실입니다.
+이에 마이크로소프트의  __Playwright__ 는 위 문제들에 대한 대안을 제시합니다.
 # Refer
 - https://docs.cypress.io/guides/core-concepts/testing-types
 - https://playwright.dev/docs/intro
