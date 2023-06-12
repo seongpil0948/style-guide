@@ -1,7 +1,7 @@
-# Playwright Vue 현업 도입 가이드
+# Playwright 현업 도입 가이드
 테스트 Convention, 산출물, 현업용 가이드로 구성된 글입니다.
 
-- [Playwright Vue 현업 도입 가이드](#playwright-vue-현업-도입-가이드)
+- [Playwright 현업 도입 가이드](#playwright-현업-도입-가이드)
   - [TODO](#todo)
   - [시작하기 전에](#시작하기-전에)
     - [소프트웨어 테스트가 처음이라면](#소프트웨어-테스트가-처음이라면)
