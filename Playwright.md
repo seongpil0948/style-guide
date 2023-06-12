@@ -8,8 +8,11 @@
 - [Vite Vue](https://github.com/seongpil0948/vue-dev-guide-sp)
 - [Vite React](https://github.com/seongpil0948/my-react-app)
 
+## 목차
 - [Playwright 시작하기](#playwright-시작하기)
   - [시작하기전에](#시작하기전에)
+    - [예시 레포지터리](#예시-레포지터리)
+  - [목차](#목차)
 - [왜 Playwright를 써야할까?](#왜-playwright를-써야할까)
   - [구체적으로 뭐가 좋을까?](#구체적으로-뭐가-좋을까)
       - [다양한 사용자 환경 지원](#다양한-사용자-환경-지원)
@@ -45,6 +48,7 @@
     - [13. Videos](#13-videos)
     - [14. 픽스처(Fixtures)](#14-픽스처fixtures)
       - [관련 링크](#관련-링크)
+    - [15. Locator](#15-locator)
   - [그래서 왜 Playwright여야 할까?](#그래서-왜-playwright여야-할까)
 - [Refer](#refer)
 
