@@ -4,6 +4,9 @@
 
 ## 시작하기전에
 만약 당신이 [프론트엔드 테스팅 기본](/technote/frontend/test)를 읽지 않았다면 읽고 오시길 바랍니다.
+### 예시 레포지터리
+- [Vite Vue](https://github.com/seongpil0948/vue-dev-guide-sp)
+- [Vite React](https://github.com/seongpil0948/my-react-app)
 
 - [Playwright 시작하기](#playwright-시작하기)
   - [시작하기전에](#시작하기전에)
@@ -54,17 +57,16 @@
 
 ## 구체적으로 뭐가 좋을까?
 #### 다양한 사용자 환경 지원
-여러 버전 또는 다양한 환경에서 소프트웨어를 테스트해야 하는 경우 자동화된 테스트는 수동 테스트보다 훨씬 효율적입니다.   
 Playwright는 Chrome, Firefox, IPhone등 다양한 사용자 환경을 지원합니다.
 #### 확장성과 반복성
 자동화된 테스트는 큰 규모, 반복적인 작업 수행하는 데 탁월합니다.
-URL을 입력하고 웹페이지와 인터랙션을 하면 Playwright는 그 행동에 대한 테스트코드를 작성 해줍니다.
+URL을 입력하고 웹페이지와 인터랙션을 하면 Playwright는행동에 대한 테스트코드를 작성 해주는 [Code generator](https://playwright.dev/docs/codegen) 기능을 제공합니다.
 #### 오류 감소와 일관성
 수동 테스트는 사람의 **실수**라는 리스크가 있지만, 자동화된 테스트는 미리 정의된 작업을 정확히 수행하므로 일관성과 정확성이 향상됩니다.  
 예상 결과와 실제 결과를 비교하여 오류를 식별하고 이에 대한 자세한 정보를 제공할 수 있습니다.  
 #### 빠른 피드백
 자동화된 테스트는 빠른 피드백 제공을 가능하게 합니다.  
-테스트 결과와 오류 보고서가 즉시 생성되어 개발자나 테스터에게 전달되므로 문제를 신속하게 파악하고 수정할 수 있습니다.  
+산출물(테스트 결과와 오류 보고서)이 즉시 생성되어 개발자나 테스터에게 전달되므로 문제를 신속하게 파악하고 수정할 수 있습니다.  
 이는 개발 초기 단계에서 문제를 발견하고 해결하는 데 도움이 됩니다.
 
 # Playwright란?
@@ -147,7 +149,7 @@ playwright.config 파일에 설정된 프로젝트별로 테스트를 필터링 
 각 단계에서 무슨 일이 발생했는지 확인하고 DOM 스냅샷을 별도의 창으로 팝업하여 디버깅 환경을 개선할 수 있습니다.
 ![test_ui.png](/test_ui.png)
 #### 1. 행동(Action) 타임라인
-테스트가 진행된 타임라인입니다. 클릭 후 마우스 이동으로 테스트가 어떻게 진행되었는지 UI로 확인 할 수 있습니다.
+테스트가 진행된 타임라인입니다. 클릭 후 커서이동을 통해 테스트가 어떻게 진행되었는지 UI로 확인 할 수 있습니다.
 
 #### 2. 행동 목록
 테스트간 진행된 행동 목록입니다 클릭시, 행동에 대한 추적(trace)정보 가 UI에 표시됩니다.
@@ -195,7 +197,7 @@ playwright.config 파일에 설정된 프로젝트별로 테스트를 필터링 
           // excelOutputFileName: 'result.xlsx',
         } as Partial<IExcelConfig>],
       ],
-      /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+      /* 모든 프로젝트에 적용될 설정내용입니다. 자세한내용은 링크를 참조하세요. https://playwright.dev/docs/api/class-testoptions. */
       use: {
         /* Base URL 은 도메인을 입력 하지않았을때 다음과 같이 사용합니다. `await page.goto('/')`. */
         baseURL: 'http://localhost:3333',
@@ -510,6 +512,108 @@ export default defineConfig({
 - https://playwright.dev/docs/test-fixtures
 - https://en.wikipedia.org/wiki/Test_fixture
 
+### 15. Locator
+    DOM 요소를 찾아내는 기능으로, 자동대기(auto wait), 재시도(retry)가 적용된 playwright의 querySelector입니다. 
+
+<table>
+  <thead>
+    <tr>
+      <th align="left">API</th>
+      <th align="left">설명</th>
+      <th align="left">예제(DOM)</th>
+      <th align="left">예제(Selector)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">
+        <a href="https://playwright.dev/docs/locators#locate-by-role">page.getByRole()</a>
+      </td>
+      <td align="left">요소의 역할에 따라 선택</td>
+      <td align="left"><code><button>Sign in</button></code></td>
+      <td align="left"><code>await page.getByRole('button', { name: 'Sign in' }).click();</code></td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a href="https://playwright.dev/docs/locators#locate-by-label">page.getByLabel()</a>
+      </td>
+      <td align="left">라벨 Text 에 따라 선택</td>
+      <td align="left"><code><label>Password <input type="password" /></label></code></td>
+      <td align="left"><code>await page.getByLabel('Password').fill('secret');</code></td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a href="https://playwright.dev/docs/locators#locate-by-placeholder">page.getByPlaceholder()</a>
+      </td>
+      <td align="left">placeholder Text 에 따라 선택</td>
+      <td align="left"><code><input type="email" placeholder="name@example.com" /></code></td>
+      <td align="left">
+        <code>
+      await page.getByPlaceholder("name@example.com").fill("playwright@microsoft.com");
+        </code>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a href="https://playwright.dev/docs/locators#locate-by-text">page.getByText()</a>
+      </td>
+      <td align="left">text에 따라 선택(substring, Regex 사용가능) </td>
+      <td align="left"><code><span>Welcome, John</span></code></td>
+      <td align="left">
+        <code>
+      await expect(page.getByText(/welcome, [A-Za-z]+$/i)).toBeVisible();
+        </code>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a href="https://playwright.dev/docs/locators#locate-by-alt-text">page.getByAltText()</a>
+      </td>
+      <td align="left"> 대부분의 이미지 요소에 사용되는 alt 속성 기준 선택  </td>
+      <td align="left"><code><img alt="playwright logo" src="https://playwright.dev/img/playwright-logo.svg" width="100" /></code></td>
+      <td align="left">
+        <code>
+      await page.getByAltText('playwright logo').click();
+        </code>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a href="https://playwright.dev/docs/locators#locate-by-title">page.getByTitle()</a>
+      </td>
+      <td align="left"> title 속성 기준 선택  </td>
+      <td align="left">
+        <code>
+          <span title='Issues count'>25 issues</span>
+        </code>
+      </td>
+      <td align="left">
+        <code>
+      await expect(page.getByTitle('Issues count')).toHaveText('25 issues');
+        </code>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a href="https://playwright.dev/docs/locators#locate-by-test-id">page.getByTestId()</a>
+      </td>
+      <td align="left"> data-testid 속성 기준 선택, 테스트 용도로 구별되는 속성으로 일관성을 유지하기 위해 주로 사용합니다. </td>
+      <td align="left">
+        <code>
+          <button data-testid="directions">방향</button>
+        </code>
+      </td>
+      <td align="left">
+        <code>
+      await page.getByTestId('directions').click();
+        </code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br />
+그밖의 더 많은 예제와 자세한 API는 [링크](https://playwright.dev/docs/locators)를 참조하세요
 
 
 ## 그래서 왜 Playwright여야 할까?

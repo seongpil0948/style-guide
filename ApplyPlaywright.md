@@ -2,6 +2,7 @@
 테스트 Convention, 산출물, 현업용 가이드로 구성된 글입니다.
 
 - [Playwright Vue 현업 도입 가이드](#playwright-vue-현업-도입-가이드)
+  - [TODO](#todo)
   - [시작하기 전에](#시작하기-전에)
     - [소프트웨어 테스트가 처음이라면](#소프트웨어-테스트가-처음이라면)
     - [Playwright 가 처음이시라면](#playwright-가-처음이시라면)
@@ -14,12 +15,21 @@
       - [1.1 참조 산출물 목록](#11-참조-산출물-목록)
     - [2. 단순하지만 오래 걸리는 작업을 선정](#2-단순하지만-오래-걸리는-작업을-선정)
     - [3.  위험도/복잡도 기반 우선순위 결정](#3--위험도복잡도-기반-우선순위-결정)
-- [적용 가능 개발 방법론](#적용-가능-개발-방법론)
-  - [TODO XP(Extreme Programming)](#todo-xpextreme-programming)
-  - [TDD(Test Driven Development)](#tddtest-driven-development)
-    - [개발주기](#개발주기)
-  - [테스트 스타일 가이드](#테스트-스타일-가이드)
+- [테스트 스타일 가이드](#테스트-스타일-가이드)
+  - [Locator](#locator)
+    - [`getByText`는 반응형, 상호작용형이 아닌 요소를 검색 찾는용도로 사용하십시오.](#getbytext는-반응형-상호작용형이-아닌-요소를-검색-찾는용도로-사용하십시오)
+    - [chaining, filtering 을 적극 사용하십시오.](#chaining-filtering-을-적극-사용하십시오)
+    - [Css, Xpath 셀렉터를 지양하십시오.](#css-xpath-셀렉터를-지양하십시오)
+  - [조절 할 수 없는 타사 서버를 테스트하지 마십시오.](#조절-할-수-없는-타사-서버를-테스트하지-마십시오)
+  - [테스트간 종속성을 가지지 않아야합니다.](#테스트간-종속성을-가지지-않아야합니다)
+  - [테스트는 작고 증분적이어야 하며 자주 커밋하십시오.](#테스트는-작고-증분적이어야-하며-자주-커밋하십시오)
+  - [테스트의 속도를 고려하여 개별 Time out 을 적용하십시오.](#테스트의-속도를-고려하여-개별-time-out-을-적용하십시오)
+    - [필요 이상의 동작을 테스트하는 코드를 작성하지 마십시오.](#필요-이상의-동작을-테스트하는-코드를-작성하지-마십시오)
+  - [Ref](#ref)
 
+
+## TODO
+- https://playwright.dev/docs/best-practices#use-web-first-assertions
 
 
 
@@ -238,36 +248,92 @@ test.describe('할일 생성,읽기,수정,삭제 테스트', () => {
 - 발생시 심각도: 랜딩 페이지에서 문제가 발생할 경우 사용자 이탈률이 발생할 수 있습니다.   
   이와같이 발생시 가장 치명적인 기능을 우선순위로 작성하십시오.
 
+# 테스트 스타일 가이드
+반드시 가이드를 준수하여야 합니다.
+## Locator
+E2E 테스트를 위해 웹요소를 가져오는 코드는 **반드시** Playwright 의 사전정의된 [locators](https://playwright.dev/docs/locators)를 사용하십시오.  
 
+### `getByText`는 반응형, 상호작용형이 아닌 요소를 검색 찾는용도로 사용하십시오.
+  - like div, span, p, etc 등 상호작용성이 없는 요소에 텍스트 로케이터를 사용하세요 
+  - button, a, input, etc. 과 같은 요소는 role locator를 사용하십시오.
+### chaining, filtering 을 적극 사용하십시오.
+    chaining을 사용하여 페이지 요소 범위를 좁혀 갈 수 있습니다.
+```ts
+const product = page.getByRole('listitem').filter({ hasText: 'Product 2' });
 
-# 적용 가능 개발 방법론
-## TODO XP(Extreme Programming)
-## TDD(Test Driven Development)
-소프트웨어가 완전히 개발되기 이전에 테스트 목록을 작성하는 프로세스.
-먼저 자동화된 테스트코드를 작성이후 테스트를 통과하기 위한 소프트웨어를 개발하는 개발방식으로,
-익스트림 프로그래밍과 반대되는 개념입니다.
+// Bad
+const items = await page.getByRole("listitem").all();
+for (let i = 0; i < items.length; i++) {
+  const item = items[i];
+  const txt = await item.textContent();
+  if (txt === "Product 2") {
+    item.getByRole("button", { name: "Add to cart" }).click();
+  }
+}
+// Good
+await page
+  .getByRole("listitem")
+  .filter({ hasText: /Product 2/ })
+  .getByRole("button", { name: "Add to cart" })
+  .click();
+```
 
-### 개발주기
-1. 테스트 추가
-새로운 기능 추가는 사양 충족시 통과하는 테스트를 작성하는 것으로 시작합니다.
-코드를 작성하기 이전 요구사항에 집중 할 수 있습니다.
-2. 테스트 실행 및 실패확인
-테스트를 통과하기 위해  새로운 코드가 필요함을 나타내고, 테스트 도구가 올바르게 작동하는지 확인해야합니다.
-3. 새 테스트를 통과하는 코드 작성
-새로운 기능을 추가하여 테스트를 통과하는지 확인합니다.
-4. 기존 모든 테스트를 통과 해야합니다.
-기존 테스트목록을 포함 모든 테스트가 통과 할 때까지 새 코드를 수정합니다.
-이는 새로운 코드가 요구사항을 만족하며, 사이드이펙트를 발생하지 않음을 나타냅니다.
-5. 리팩터링 및 테스트
-필요시 가독성과 유지보수성을 위한 리팩터링을 진행, **4번** 과정을 반복합니다.
+### Css, Xpath 셀렉터를 지양하십시오.
+    변경 될 요소가 다분한 계층구조 Select는 테스트를 망가트릴 수 있습니다.
+```ts
+// Bad
+page.locator('button.buttonIcon.episode-actions-later')
 
+// Good
+page.getByRole('button', { name: 'submit' })
+```
 
-## 테스트 스타일 가이드
-- 테스트는 작고 증분적이어야 하며 자주 커밋하십시오.  
+## 조절 할 수 없는 타사 서버를 테스트하지 마십시오.
+    E2E, 단위 테스트간 컨트롤 할 수 없는 외부 서버를 테스트 하지마십시오.
+
+1. 대신 [Playwright 네트워크 API](https://playwright.dev/docs/network#handle-requests)를 사용 하여 보장된 **Response객체**를 얻어 올 수 있습니다.
+    ```ts
+    await page.route('**/api/fetch_data_third_party_dependency', route => route.fulfill({
+      status: 200,
+      body: testData,
+    }));
+    await page.goto('https://example.com');
+    ```
+2. 대신 외부 서버의 작동을 확인하는 스모크 테스트를 사용 할 수 있습니다.
+- https://charstring.tistory.com/345
+- https://medium.com/healint-engineering-data/easy-api-smoke-tests-with-postman-monitoring-b842eeb59f18
+
+## 테스트간 종속성을 가지지 않아야합니다.  
+    상호의존적인 테스트는 계단식 거짓 실패의 발생과 디버그, 관리의 어려움을 유발합니다.  
+- 테스트 목록의 실행 순서에 영향을 받지 않아야 합니다.
+- 각 테스트는 고유의 상태(data, local/session storage, cookies, etc)를 가지고 있어야 합니다.
+- 독립적인 [실행 환경(고유의 브라우저)](https://playwright.dev/docs/browser-contexts#what-is-test-isolation)을 가져야 합니다.
+
+다음과 같이 작성하여 독립성과 유지보수성을 유지하십시오.
+```ts
+import { test } from '@playwright/test';
+
+test.beforeEach(async ({ page }) => {
+  // Runs before each test and signs in each page.
+  await page.goto('https://github.com/login');
+  await page.getByLabel('Username or email address').fill('username');
+  await page.getByLabel('Password').fill('password');
+  await page.getByRole('button', { name: 'Sign in' }).click();
+});
+
+test('first', async ({ page }) => {
+  // 인증 완료 상태 페이지 접근
+});
+
+test('second', async ({ page }) => {
+  // 인증 완료 상태 페이지 접근
+});
+```
+## 테스트는 작고 증분적이어야 하며 자주 커밋하십시오.  
     새코드가 일부 테스트에 실패하면, 과도한 디버그 대신 간단히 실행 취소 또는 되돌릴 수 있습니다.
     작은 테스트는 모듈화가 가능하고, 읽고 이해하기 쉽습니다.
 
-- 테스트의 속도를 고려하여 개별 Time out 을 적용하십시오.  
+## 테스트의 속도를 고려하여 개별 Time out 을 적용하십시오.  
 전체 타임아웃은 낮게 잡되 테스트 결과의 위음성(거짓음성)을 방지하기 위해 오래 걸리는 테스트는 개별 타임아웃을 적용 하십시오.
   ```ts
   // playwright.config.ts
@@ -287,10 +353,11 @@ test.describe('할일 생성,읽기,수정,삭제 테스트', () => {
     test.slow()
     ...
   ```
-- 테스트간 종속성을 가지지 않아야합니다.  
-테스트 목록의 실행 순서와 관계없이, 각 테스트는 고유의 상태를 가지고 있어야합니다.
-상호의존적인 테스트는 계단식 위음성의 발생과 디버그, 관리의 어려움을 유발합니다.  
 
-- 필요 이상의 동작을 테스트하는 코드를 작성하지 마십시오.    
+### 필요 이상의 동작을 테스트하는 코드를 작성하지 마십시오.    
 일반적으로 오류는 복잡한 프로젝트 전체에서 미묘하게 발생합니다.  
 정확한 에러 발생지점을 알기 위해 작은 테스트로 나누어 작성하십시오.
+
+## Ref
+- https://playwright.dev/docs/best-practices
+- https://github.com/microsoft/playwright/discussions/10754

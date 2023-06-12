@@ -27,6 +27,11 @@
     - [클라이언트는 산출물이 필요합니다.](#클라이언트는-산출물이-필요합니다)
     - [결국 신뢰를 얻습니다.](#결국-신뢰를-얻습니다)
 - [Refer](#refer)
+- [적용 가능 개발 방법론](#적용-가능-개발-방법론)
+  - [TODO XP(Extreme Programming)](#todo-xpextreme-programming)
+  - [TDD(Test Driven Development)](#tddtest-driven-development)
+    - [개발주기](#개발주기)
+  - [Ref](#ref)
 
 
 ## 우리는 왜 테스트를 해야 할 까?
@@ -72,7 +77,241 @@
 
 ### 검증(Assertion)
 	주어진 함수가 잘 동작하고 제대로 된 값을 반환하는지 검증해주는 역할
-(테스터)가 실제 결과를 예상 결과와 비교하도록 허용하며, 이 비교가 실패하는 경우 테스트 결과를 "실패(Failure)"로 반환합니다.
+(테스터)가 실제 결과를 예상 결과와 비교하도록 허용하며, 이 비교가 실패하는 경우 테스트 결과를 "실패(Failure)"로 반환합니다.  
+아래 표에서 locator은 **Dom Element** 로 이해 할 수 있습니다.
+<table>
+  <thead>
+    <tr>
+      <th align="left">Assertion</th>
+      <th align="left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-be-attached"
+          >expect(locator).toBeAttached()</a
+        >
+      </td>
+      <td align="left">요소의 DOM 마운트 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-be-checked"
+          >expect(locator).toBeChecked()</a
+        >
+      </td>
+      <td align="left">체크박스 요소의 체크 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-be-disabled"
+          >expect(locator).toBeDisabled()</a
+        >
+      </td>
+      <td align="left">요소가 사용 불가 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-be-editable"
+          >expect(locator).toBeEditable()</a
+        >
+      </td>
+      <td align="left">요소가 수정 가능한 상태인지 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-be-empty"
+          >expect(locator).toBeEmpty()</a
+        >
+      </td>
+      <td align="left">요소 하위 노드 미존재 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-be-enabled"
+          >expect(locator).toBeEnabled()</a
+        >
+      </td>
+      <td align="left">요소 사용 가능 상태 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-be-focused"
+          >expect(locator).toBeFocused()</a
+        >
+      </td>
+      <td align="left">요소의 포커싱 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-be-hidden"
+          >expect(locator).toBeHidden()</a
+        >
+      </td>
+      <td align="left">요소가 화면에 보이지 않는지 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-be-in-viewport"
+          >expect(locator).toBeInViewport()</a
+        >
+      </td>
+      <td align="left">화면 크기내의 요소 존재 검증 </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-be-visible"
+          >expect(locator).toBeVisible()</a
+        >
+      </td>
+      <td align="left">요소가 보여지고 있는지 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-contain-text"
+          >expect(locator).toContainText()</a
+        >
+      </td>
+      <td align="left">요소내 특정 텍스트노드의 포함 여부 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-have-attribute"
+          >expect(locator).toHaveAttribute()</a
+        >
+      </td>
+      <td align="left">요소의 DOM 속성(attribute) 소유 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-have-class"
+          >expect(locator).toHaveClass()</a
+        >
+      </td>
+      <td align="left">요소의 class 소유 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-have-count"
+          >expect(locator).toHaveCount()</a
+        >
+      </td>
+      <td align="left">요소의 자식 요소 개수 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-have-css"
+          >expect(locator).toHaveCSS()</a
+        >
+      </td>
+      <td align="left">요소의 CSS 스타일 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-have-id"
+          >expect(locator).toHaveId()</a
+        >
+      </td>
+      <td align="left">요소의 ID 속성 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-have-js-property"
+          >expect(locator).toHaveJSProperty()</a
+        >
+      </td>
+      <td align="left">요소의 직렬화/기본 된 자바스크립트 객체 속성 검증, </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-have-screenshot-1"
+          >expect(locator).toHaveScreenshot()</a
+        >
+      </td>
+      <td align="left">요소의 스크린샷 존재 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-have-text"
+          >expect(locator).toHaveText()</a
+        >
+      </td>
+      <td align="left">요소의 텍스트 검증(extract)</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-have-value"
+          >expect(locator).toHaveValue()</a
+        >
+      </td>
+      <td align="left">input 요소의 값 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-have-values"
+          >expect(locator).toHaveValues()</a
+        >
+      </td>
+      <td align="left">select 요소의 선택된 값 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-pageassertions#page-assertions-to-have-screenshot-1"
+          >expect(page).toHaveScreenshot()</a
+        >
+      </td>
+      <td align="left">페이지에 해당하는 스크린샷 존재 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a href="https://playwright.dev/docs/api/class-pageassertions#page-assertions-to-have-title"
+          >expect(page).toHaveTitle()</a
+        >
+      </td>
+      <td align="left">페이지에 해당하는 title 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a href="https://playwright.dev/docs/api/class-pageassertions#page-assertions-to-have-url"
+          >expect(page).toHaveURL()</a
+        >
+      </td>
+      <td align="left">페이지에 해당하는 URL 검증</td>
+    </tr>
+    <tr>
+      <td align="left">
+        <a
+          href="https://playwright.dev/docs/api/class-apiresponseassertions#api-response-assertions-to-be-ok"
+          >expect(apiResponse).toBeOK()</a
+        >
+      </td>
+      <td align="left">API Response의 성공 여부 검증</td>
+    </tr>
+  </tbody>
+</table>
 
 ### 그룹화(describe)
 테스트 파일에 많은 수의 테스트 함수가 작성되어 있는 경우, 연관된 테스트 함수들을 그룹화 할 수 있습니다.
@@ -202,3 +441,29 @@ const unsubscribeAuth = authStore.$onAction(
 - https://playwright.dev/docs/test-assertions
 - https://playwright.dev/docs/api/class-genericassertions
 - https://doong-jo.github.io/posts/front-end_testing_strategy/
+
+# 적용 가능 개발 방법론
+## TODO XP(Extreme Programming)
+## TDD(Test Driven Development)
+소프트웨어가 완전히 개발되기 이전에 테스트 목록을 작성하는 프로세스.
+먼저 자동화된 테스트코드를 작성이후 테스트를 통과하기 위한 소프트웨어를 개발하는 개발방식으로,
+익스트림 프로그래밍과 반대되는 개념입니다.
+
+### 개발주기
+1. 테스트 추가
+새로운 기능 추가는 사양 충족시 통과하는 테스트를 작성하는 것으로 시작합니다.
+코드를 작성하기 이전 요구사항에 집중 할 수 있습니다.
+2. 테스트 실행 및 실패확인
+테스트를 통과하기 위해  새로운 코드가 필요함을 나타내고, 테스트 도구가 올바르게 작동하는지 확인해야합니다.
+3. 새 테스트를 통과하는 코드 작성
+새로운 기능을 추가하여 테스트를 통과하는지 확인합니다.
+4. 기존 모든 테스트를 통과 해야합니다.
+기존 테스트목록을 포함 모든 테스트가 통과 할 때까지 새 코드를 수정합니다.
+이는 새로운 코드가 요구사항을 만족하며, 사이드이펙트를 발생하지 않음을 나타냅니다.
+5. 리팩터링 및 테스트
+필요시 가독성과 유지보수성을 위한 리팩터링을 진행, **4번** 과정을 반복합니다.
+## Ref
+- https://en.wikipedia.org/wiki/Test-driven_development#:~:text=Test%2Ddriven%20development%20(TDD),software%20against%20all%20test%20cases
+- https://en.wikipedia.org/wiki/Behavior-driven_development
+- https://portal.netobjectives.com/articles-public/test-driven-development-atdd-and-utdd/
+- https://en.wikipedia.org/wiki/Extreme_programming
