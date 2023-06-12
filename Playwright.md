@@ -40,7 +40,9 @@
       - [예시 2) 테스트에 태그를 추가하여 필터링된 테스트 케이스를 실행.](#예시-2-테스트에-태그를-추가하여-필터링된-테스트-케이스를-실행)
       - [예시 3) 사용자 설정된 주석으로 테스트 메타 데이터 관리](#예시-3-사용자-설정된-주석으로-테스트-메타-데이터-관리)
     - [13. Videos](#13-videos)
-  - [그래서 왜 Playwright?](#그래서-왜-playwright)
+    - [14. 픽스처(Fixtures)](#14-픽스처fixtures)
+      - [관련 링크](#관련-링크)
+  - [그래서 왜 Playwright여야 할까?](#그래서-왜-playwright여야-할까)
 - [Refer](#refer)
 
 
@@ -495,7 +497,22 @@ export default defineConfig({
 });
 ```
 
-## 그래서 왜 Playwright?
+### 14. 픽스처(Fixtures)
+    fixture(고정된 상태)은 각 테스트에 필요한 환경을 사전 구성하는 기능입니다.
+픽스처는 각 테스트가 진행되기 전 DB를 세팅하는 작업이 될 수도, 공통적으로 사용되는 클래스의 초기화 작업이 될 수도 있습니다.  
+
+픽스처는 크게 두가지의 종류로 사용됩니다.
+1. 여러 테스트에 걸쳐 중복된 데이터 생성이 필요할 때
+2. 여러 테스트에 사용되는 상태 혹은 helper 메소드를 정의 할 때
+
+**Playwright** 는 기존 테스트에 사용되던 test 객체에 기능을 추가(extends)/오버라이딩 하는 방법으로 사용 할 수 있습니다.
+#### 관련 링크
+- https://playwright.dev/docs/test-fixtures
+- https://en.wikipedia.org/wiki/Test_fixture
+
+
+
+## 그래서 왜 Playwright여야 할까?
 먼저 vitest, vue3는 unit, component 공식 unit/component 테스트 라이브러리로 vitest를 사용하고 있습니다.  
 하지만 vite, vue 모두 SPC 를 위한 툴이며, vitest는 SPC, Client-Side Rendering 가 아닌 환경에서는 component 테스팅조차 의도대로 동작하지 않습니다.  
 
