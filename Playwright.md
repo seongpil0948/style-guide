@@ -50,7 +50,7 @@
       - [관련 링크](#관련-링크)
     - [15. Locator](#15-locator)
   - [그래서 왜 Playwright여야 할까?](#그래서-왜-playwright여야-할까)
-- [Refer](#refer)
+- [참고문서](#참고문서)
 
 
 # 왜 Playwright를 써야할까?
@@ -60,6 +60,8 @@
 이에 **Playwright**는 다양한 기능들을 통해 빠르고 안정적인 테스트 자동화가 이루어 질 수 있도록 지원합니다.  
 
 ## 구체적으로 뭐가 좋을까?
+<br />
+
 #### 다양한 사용자 환경 지원
 Playwright는 Chrome, Firefox, IPhone등 다양한 사용자 환경을 지원합니다.
 #### 확장성과 반복성
@@ -74,9 +76,8 @@ URL을 입력하고 웹페이지와 인터랙션을 하면 Playwright는행동�
 이는 개발 초기 단계에서 문제를 발견하고 해결하는 데 도움이 됩니다.
 
 # Playwright란?
-Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 소스 도구입니다. 
-브라우저(Chrome, Firefox, Safari 등)를 제어하고   
-사용자의 행동(클릭, 키 입력, 네비게이션 등)에 대한 시뮬레이션, 테스트 기능을 제공합니다.
+- Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 소스 도구입니다. 
+- 브라우저(Chrome, Firefox, Safari 등)를 **제어**, 사용자의 행동(클릭, 키 입력, 네비게이션 등)에 대한 **시뮬레이션**, **테스트** 기능을 제공합니다.
 
 ## 시작하기
 1. 다음 명령어를 사용하여 vue 프로젝트를 생성합니다. 
@@ -92,10 +93,10 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
     ```
     - e2e 테스트 경로는 `test/e2e`로 설정합니다
     - Github Action 워크플로우는 설정하지 않습니다.
-    - 처음 설치한 경우 테스트 브라우저 엔진은 설치하지 않습니다.
+    - 테스트 브라우저 엔진을 설치합니다.
     - 설치중 문제가 발생하였나요? 
       - 리눅스(Ubuntu) 환경이라면 패키지 의존성 관련 에러가 발생 할 수 있습니다
-      - 아래 명령어를 사용하여 설치하세요. [관련링크](https://github.com/microsoft/playwright/issues/13738)
+      - 아래 명령어를 사용하여 브라우저 엔진을 설치하세요. [관련링크](https://github.com/microsoft/playwright/issues/13738)
         ``` bash
           $ pnpm exec playwright install --with-deps
           or
@@ -141,15 +142,13 @@ Playwright는 웹 애플리케이션 테스트 및 자동화를 위한 오픈 �
     ![playwright-ui-allapssed.png](/성필/playwright-ui-allapssed.png)
 
 ### 결과 살펴보기
-우리가 이전 단계에서 실행한 테스트한 정보를 확인 하겠습니다.  
-모든 테스트 파일이 테스트 사이드바에 로드되어 각 파일을 확장하고  
-블록을 설명하여 각 테스트를 개별적으로 실행, 보기, 보기 및 디버그할 수 있습니다.  
+모든 테스트 파일이 테스트 사이드바에 로드되어 각 파일, 테스트을  실행, 보기, 디버그할 수 있습니다.  
 
 **텍스트** 또는 **@tag** 또는 통과, 실패 및 건너뛴 테스트뿐만 아니라.  
-playwright.config 파일에 설정된 프로젝트별로 테스트를 필터링 할 수 있습니다. 
+`playwright.config` 파일에 설정된 프로젝트(브라우저 환경)별로 테스트를 필터링 할 수 있습니다. 
 ![filter_list.png](/성필/playwright/filter_list.png)
 
-우리는 테스트의 전체 추적정보(trace)를 확인하고 각 작업 위에 앞뒤로 마우스를 올려(hover) 
+우리는 테스트간 유저 행동의 추적정보(trace)를 확인하고
 각 단계에서 무슨 일이 발생했는지 확인하고 DOM 스냅샷을 별도의 창으로 팝업하여 디버깅 환경을 개선할 수 있습니다.
 ![test_ui.png](/test_ui.png)
 #### 1. 행동(Action) 타임라인
@@ -164,11 +163,13 @@ playwright.config 파일에 설정된 프로젝트별로 테스트를 필터링 
 
 #### 4. 추적 정보 뷰어
 각 행동 또는 테스트전체에 대한 테스트코드, 콘솔로그, 테스트로그, 네트워크 로그를 확인 할 수 있습니다.
+<br />
+
 ### 로컬환경에서 테스트 코드 작성하기
     playwright는 주어진 URL를 입력하면, 상호 작용 가능한 Window를 제공합니다.
     이것을 통해 우리는 앱을 테스트 하고, 상호작용 이력을 테스트코드로 자동 생성 할 수 있습니다.
 
-1. 테스트 결과를 엑셀로 표시 할 수 있는 사내제작, xlsx 패키지를 설치합니다.  
+1. 테스트 결과를 엑셀로 표시 할 수 있는 **playwright-excel-reporter**, **xlsx** 패키지를 설치합니다.  
 
     ```
     $ pnpm install -D playwright-excel-reporter xlsx@https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz
@@ -225,15 +226,15 @@ playwright.config 파일에 설정된 프로젝트별로 테스트를 필터링 
     })
     ```
 
-2. 로컬 서버를 실행시킵니다.
+3. 로컬 서버를 실행시킵니다.
 
     `$ pnpm run dev`
 
-3. 새로운 테스트 파일을 생성합니다. 
+4. 새로운 테스트 파일을 생성합니다. 
 	
   	`$ touch test/e2e/el-todo.spec.ts`
   
-4. 다음 코드를 붙여넣습니다. 
+5. 다음 코드를 붙여넣습니다. 
 ```typescript
 import { expect, test } from '@playwright/test'
 
@@ -248,15 +249,15 @@ test.describe('Todo CRUD ', () => {
   })
 })
 ```
-5. 커서를 `await page.goto(MAIN_ROUTE)` 하단 9번 라인에 위치 시킵니다.
+6. 커서를 `await page.goto(MAIN_ROUTE)` 하단 9번 라인에 위치 시킵니다.
     ![record_at_cursor.png](/성필/record_at_cursor.png)
-6. 상단 사진의 1, 2번을 차례로 클릭하여 상호작용 가능한 Window를 실행시킵니다.
+7. 상단 사진의 1, 2번을 차례로 클릭하여 상호작용 가능한 창을 실행시킵니다.
 
-7. 테스트 브라우저의 주소창에 `http://localhost:3333/guide/samp/el-todo` 입력하여 이동합니다.
+8. 테스트 브라우저의 주소창에 `http://localhost:3333/guide/samp/el-todo` 입력하여 이동합니다.
 
-8. 페이지에서 todo 항목을 입력하고 추가 버튼을 눌러 **데이터 2건 생성**을 테스트 해보십시오.
+9. 페이지에서 todo 항목을 입력하고 추가 버튼을 눌러 **데이터 2건 생성**을 테스트 해보십시오.
 
-9. playwright - code generate 기능을 통해 테스트 코드가 생성되었음을 확인하세요  
+10. [code generate](https://playwright.dev/docs/codegen-intro) 기능을 통해 테스트 코드가 생성되었음을 확인하세요  
 	 **만약 조금 이상하거나 다르다면 아래 코드를 붙여넣으세요.**
 	
     ```javascript
@@ -282,16 +283,16 @@ test.describe('Todo CRUD ', () => {
     })
     ```
 
-10.  좋습니다. 이제 생성된 2개의 todo목록에 대한 검증을 위한 코드를 16번 라인에 추가하겠습니다.  
+11.  좋습니다. 이제 생성된 2개의 todo목록에 대한 검증을 위한 코드를 16번 라인에 추가하겠습니다.  
 ```javascript
 		// 할 일 목록 테이블에 2개의 행이 존재하는지 검증하는 코드
     expect((await page.$$('.data-test-row')).length).toEqual(2)
 ```
 
-11. 테스트 UI를 통해 테스트를 실행합니다.   
+12. 테스트 UI를 통해 테스트를 실행합니다.   
 		1. `pnpm run test:e2e:ui`  
 		2. ![run_create_todo_test.png](/성필/run_create_todo_test.png)
-12. 저런 테스트가 실패했습니다! 살펴봅시다.  **[사진 12]**  
+13. 저런 테스트가 실패했습니다! 살펴봅시다.  **[사진 12]**  
 ![ui-test-fail.png](/성필/ui-test-fail.png)
     1. 실패한 테스트 목록을 확인 할 수 있습니다.
     2. 에러메세지를 확인 결과: 행이 2개가 아니라 0개로 잡힙니다.
@@ -301,7 +302,7 @@ test.describe('Todo CRUD ', () => {
 두 번째 행을 추가하는 테스트 코드 작성과  
 `.data-test-row` class 를 가진 row 목록을 받아오는 코드의 수정이 필요합니다.
 
-13. 두 번째 행을 추가하는 테스트 코드 작성
+14. 두 번째 행을 추가하는 테스트 코드 작성
     1.  3번의 탭목록중 Pick locator를 클릭합니다.
     2.  그리고 화면의 추가 버튼을 클릭합니다.
     3.  ![add_todo.png](/성필/add_todo.png)
@@ -312,7 +313,7 @@ test.describe('Todo CRUD ', () => {
         await page.getByRole('button', { name: '추가' }).click()
         expect((await page.$$('.data-test-row')).length).toEqual(2)
         ```
-14. `.data-test-row` class 를 가진 row 목록을 받아오는 코드의 수정
+15. `.data-test-row` class 를 가진 row 목록을 받아오는 코드의 수정
 > 테스트에 사용될 selector는 반드시 **data-test**를 prefix로 가져야 합니다.   
 > 즉 변경되지 않으며 JS/Css 와 **격리**된, 테스트 용도의 속성이어야 합니다.  
  `src/guide/pages/samp/el-todo.vue` 파일 - `el-table` 엘리먼트의 속성을 추가합니다.          
@@ -321,8 +322,10 @@ test.describe('Todo CRUD ', () => {
   <el-table data-test-id="todo-table" :data="todoList" style="width: 100%" row-class-name="data-test-row">
   ```
 
-15.  다시 테스트를 진행, 성공을 확인합니다.
-16.  screenshots 폴더에서 테스트 중 얻은 스크린샷을 확인합니다.
+16.  다시 테스트를 진행, 성공을 확인합니다.
+17.  산출물을 확인합니다.
+		- `screenshots` 폴더에서 스크린샷을 확인하세요
+		- `excel-reporter-result` 폴더에서 엑셀 파일을 확인하세요
 
 ## 결론
 
@@ -356,8 +359,8 @@ test.describe('Todo CRUD ', () => {
 
 ### 2. Reporter
     playwright는 진행된 테스트에 대한 레포트를 다양한 양식으로 지원합니다.  
-주요 양식은 다음과 같습니다.
-[관련문서](https://playwright.dev/docs/test-reporters)
+자세한 내용은 [관련문서](https://playwright.dev/docs/test-reporters) 에서 확인하세요.
+
 - HTML
   - 파일(페이지) - 테스트 그룹 - 테스트 케이스로 분류된 목록
   - pass/fail/skip 필터링
@@ -617,7 +620,7 @@ export default defineConfig({
 </table>
 
 <br />
-그밖의 더 많은 예제와 자세한 API는 [링크](https://playwright.dev/docs/locators)를 참조하세요
+그밖의 더 많은 예제와 자세한 API는  [링크](https://playwright.dev/docs/locators) 를 참조하세요
 
 
 ## 그래서 왜 Playwright여야 할까?
@@ -629,8 +632,8 @@ export default defineConfig({
 그동안 e2e 테스트는 unit test 보다 앱에대한 자신감을 가질 수 있지만, 
 훨씬 더 요구되는 개발비용으로 인해 도입이 어려웠었던 것이 현실입니다.
 이에 마이크로소프트의  __Playwright__ 는 위 문제들에 대한 대안을 제시합니다.
-# Refer
+# 참고문서
 - https://docs.cypress.io/guides/core-concepts/testing-types
 - https://playwright.dev/docs/intro
- - https://github.com/microsoft/playwright/issues/10855
- - https://playwright.dev/docs/videos
+- https://github.com/microsoft/playwright/issues/10855
+- https://playwright.dev/docs/videos
