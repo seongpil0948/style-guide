@@ -27,11 +27,6 @@
     - [클라이언트는 산출물이 필요합니다.](#클라이언트는-산출물이-필요합니다)
     - [결국 신뢰를 얻습니다.](#결국-신뢰를-얻습니다)
 - [Refer](#refer)
-- [적용 가능 개발 방법론](#적용-가능-개발-방법론)
-  - [TODO XP(Extreme Programming)](#todo-xpextreme-programming)
-  - [TDD(Test Driven Development)](#tddtest-driven-development)
-    - [개발주기](#개발주기)
-  - [Ref](#ref)
 
 
 ## 우리는 왜 테스트를 해야 할 까?
@@ -442,28 +437,6 @@ const unsubscribeAuth = authStore.$onAction(
 - https://playwright.dev/docs/api/class-genericassertions
 - https://doong-jo.github.io/posts/front-end_testing_strategy/
 
-# 적용 가능 개발 방법론
-## TODO XP(Extreme Programming)
-## TDD(Test Driven Development)
-소프트웨어가 완전히 개발되기 이전에 테스트 목록을 작성하는 프로세스.
-먼저 자동화된 테스트코드를 작성이후 테스트를 통과하기 위한 소프트웨어를 개발하는 개발방식으로,
-익스트림 프로그래밍과 반대되는 개념입니다.
 
-### 개발주기
-1. 테스트 추가
-새로운 기능 추가는 사양 충족시 통과하는 테스트를 작성하는 것으로 시작합니다.
-코드를 작성하기 이전 요구사항에 집중 할 수 있습니다.
-2. 테스트 실행 및 실패확인
-테스트를 통과하기 위해  새로운 코드가 필요함을 나타내고, 테스트 도구가 올바르게 작동하는지 확인해야합니다.
-3. 새 테스트를 통과하는 코드 작성
-새로운 기능을 추가하여 테스트를 통과하는지 확인합니다.
-4. 기존 모든 테스트를 통과 해야합니다.
-기존 테스트목록을 포함 모든 테스트가 통과 할 때까지 새 코드를 수정합니다.
-이는 새로운 코드가 요구사항을 만족하며, 사이드이펙트를 발생하지 않음을 나타냅니다.
-5. 리팩터링 및 테스트
-필요시 가독성과 유지보수성을 위한 리팩터링을 진행, **4번** 과정을 반복합니다.
-## Ref
-- https://en.wikipedia.org/wiki/Test-driven_development#:~:text=Test%2Ddriven%20development%20(TDD),software%20against%20all%20test%20cases
-- https://en.wikipedia.org/wiki/Behavior-driven_development
-- https://portal.netobjectives.com/articles-public/test-driven-development-atdd-and-utdd/
-- https://en.wikipedia.org/wiki/Extreme_programming
+
+
