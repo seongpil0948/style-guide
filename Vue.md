@@ -11,16 +11,12 @@ Typescript를 사용 하십시오.
 새로운 혹은 업데이트가 필요한 패턴이 있다면 이슈를 열어주세요.
 
 ## TODO
-- [X] 대용량 데이터 처리 따로 테스트 했던 example 업로드
-- [X] v-deep 추가
-- [X] https://vue-dev-guide.netlify.app/guide/interface 반영
 - [ ] https://insight.infograb.net/blog/2023/04/21/
 - [ ] https://gist.github.com/plinionaves/
-- [X] https://nuxt.com/docs/guide/directory-structure/
 - [ ] https://pinia.vuejs.org/introduction.htmls
 - [ ] fetch & mockup -> axios 로 변경
-  - [ ] https://github.com/socketbear/vue-dev-guide
-    - plugins 폴더와 기본 Axios 세팅이 된 PR 머지 이후 진행
+- [ ] https://github.com/socketbear/vue-dev-guide
+- [ ] plugins 폴더와 기본 Axios 세팅이 
 
 ## Table of Contents
 
@@ -45,7 +41,10 @@ Typescript를 사용 하십시오.
     - [3.4.2 `/src/composables`](#342-srccomposables)
     - [3.4.3 `/src/{service}`](#343-srcservice)
       - [3.4.3.1 `/src/{service}/components`](#3431-srcservicecomponents)
-      - [3.4.3.2 `/src/{service}/components/{page}`](#3432-srcservicecomponentspage)
+      - [3.4.3.2 `/src/{service}/components/{page}/{component}.vue`](#3432-srcservicecomponentspagecomponentvue)
+      - [3.4.3.3 `/src/{service}/types/}`](#3433-srcservicetypes)
+      - [3.4.3.4 `/src/{service}/store/}`](#3434-srcservicestore)
+      - [3.4.3.5 `/src/{service}/composables/}`](#3435-srcservicecomposables)
     - [3.4.4 `/src/layouts`](#344-srclayouts)
     - [3.4.5 `/src/modules`](#345-srcmodules)
     - [3.4.6 `/src/pages`](#346-srcpages)
@@ -309,9 +308,15 @@ Framework 내 상기 디렉토리 아래에 구성된 `export` 항목들은 자�
 
 서비스 내부 사용되는 최소 단위 컴포넌트를 저장하십시오.
 
-#### 3.4.3.2 `/src/{service}/components/{page}`
+#### 3.4.3.2 `/src/{service}/components/{page}/{component}.vue`
+서비스내 특정 페이지 한정 사용되는 컴포넌트를 저장하십시오.
+#### 3.4.3.3 `/src/{service}/types/}`
+서비스내 한정 사용되는 타입들을 저장하십시오.
+#### 3.4.3.4 `/src/{service}/store/}`
+서비스내 한정 사용되는 pinia 모듈을 저장하십시오.
 
-서비스내 특정 페이지 한정 사용되는 컴포넌트를 저장하십시오
+#### 3.4.3.5 `/src/{service}/composables/}`
+서비스내 한정 사용되는 composition-api 모듈을 저장하십시오. 
 
 ### 3.4.4 `/src/layouts`
 
