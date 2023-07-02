@@ -11,12 +11,8 @@ Typescript를 사용 하십시오.
 새로운 혹은 업데이트가 필요한 패턴이 있다면 이슈를 열어주세요.
 
 ## TODO
-- [ ] https://insight.infograb.net/blog/2023/04/21/
-- [ ] https://gist.github.com/plinionaves/
-- [ ] https://pinia.vuejs.org/introduction.htmls
-- [ ] fetch & mockup -> axios 로 변경
+- [ ] fetch & mockup -> axios 로 변경 및 세팅 PR
 - [ ] https://github.com/socketbear/vue-dev-guide
-- [ ] plugins 폴더와 기본 Axios 세팅이 
 
 ## Table of Contents
 
