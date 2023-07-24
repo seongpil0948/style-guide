@@ -75,7 +75,14 @@ function lodashSet<Type, Path extends string>(
   });
   current = value;
 }
-
+// describe('test literal', function() {
+//   it('test literal.lodashSet', function(done) {
+//       let obj = { a: { b: { c: 1 } } };
+//       literal.lodashSet(obj, 'a.b.c', 2);
+//       assert.equal(obj.a.b.c, 2);
+//       done();
+//   })
+// })
 const someObject = {
   abacus: {
     core: {
