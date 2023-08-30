@@ -35,3 +35,42 @@ export type T3 = NonNullable<string[] | null | undefined>;
 declare function f1(arg: {a: number; b: string}): void;
 export type T4 = Parameters<typeof f1>;
 export const a: T4 = (a: 1);
+
+type NonNullable<T> = T extends null | undefined ? never : T
+
+interface Employee {
+  name?: string | null
+  country?: string | null
+  salary?: number | null
+}
+
+type Concrete<Type> = {
+  [Key in keyof Type]-?: NonNullable<Type[Key]>;
+}
+
+// 👇️ type T2 = {
+//     name: string | null;
+//     country: string | null;
+//     salary: number | null;
+// }
+type T2 = Concrete<Employee>
+
+interface T {
+  a: string
+  b?: string
+}
+
+// Note b is optional
+const sameAsT: { [K in keyof T]: string } = {
+  a: 'asdf', // a is required
+}
+
+// Note a became optional
+const canBeNotPresent: { [K in keyof T]+?: string } = {
+}
+
+// Note b became required
+const mustBePreset: { [K in keyof T]-?: string } = {
+  a: 'asdf',
+  b: 'asdf', // b became required
+}
